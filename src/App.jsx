@@ -5,18 +5,19 @@ import Inventory from './components/InventoryRequest';
 import NewMarkets from './components/onboarding/NewMarkets';
 import DemandForecast from './components/onboarding/DemandForecast';
 import UploadDocuments from "./components/onboarding/UploadDocuments";
+import ForgotPassword from './components/auth/ForgotPassword';
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/dashboard"  />} />
+        <Route path="/" element={<ForgotPassword />} />
+        {/* <Route path="/" element={<Navigate to="/dashboard"  />} />
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route path="calendar" element={<Calendar />} />
           <Route path="inventory" element={<Inventory />} />
           <Route path="markets" element={<NewMarkets />} />
           <Route path="forecast" element={<DemandForecast />} />
-          <Route path="documents" element={<UploadDocuments />} />
-        </Route>
+          <Route path="documents" element={<UploadDocuments />} /> */}
       </Routes>
     </Router>
   );

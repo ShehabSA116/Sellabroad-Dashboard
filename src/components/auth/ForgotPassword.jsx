@@ -5,7 +5,7 @@ export default function ForgotPassword() {
   return (
     <AuthLayout
       title="Reset your password"
-      subtitle="Enter your email address and we'll send you a link to reset your password."
+      subtitle="Enter your email address and we'll send you an OTP code to reset your password."
     >
       <form className="space-y-6">
         <div>
@@ -29,7 +29,7 @@ export default function ForgotPassword() {
             type="submit"
             className="flex w-full justify-center rounded-md border border-transparent bg-[#0049ac] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#0049ac]/90 focus:outline-none focus:ring-2 focus:ring-[#0049ac] focus:ring-offset-2"
           >
-            Send reset link
+            Send OTP Code
           </button>
         </div>
 
