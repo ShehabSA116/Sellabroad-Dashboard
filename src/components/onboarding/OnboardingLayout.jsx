@@ -1,5 +1,5 @@
 import { Steps } from 'antd';
-import SidePanel from '../SidePanel';
+import SidePanel from '../icons/SidePanel';
 import NewMarkets from './NewMarkets';
 import DemandForecast from './DemandForecast';
 
