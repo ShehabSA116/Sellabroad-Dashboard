@@ -5,11 +5,21 @@ import Inventory from './components/InventoryRequest';
 import NewMarkets from './components/onboarding/NewMarkets';
 import DemandForecast from './components/onboarding/DemandForecast';
 import UploadDocuments from "./components/onboarding/UploadDocuments";
+import VerifyOtp from "./components/auth/VerifyOtp";
+import AuthenticateLayout from "./components/AuthenticateLayout";
+
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/dashboard"  />} />
+        <Route path="/" element={<Navigate to="/dashboard" />} />
+        
+        {/* Authentication routes */}
+        <Route path="/auth" element={<AuthenticateLayout />}>
+          <Route path="verify-otp" element={<VerifyOtp />} />
+        </Route>
+
+        {/* Dashboard routes */}
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route path="calendar" element={<Calendar />} />
           <Route path="inventory" element={<Inventory />} />
