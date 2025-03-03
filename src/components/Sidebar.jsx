@@ -76,7 +76,7 @@ const menuSections = {
     icon: ComputerDesktopIcon,
     items: [
       { name: 'Marketing Dashboard', path: '/marketing/dashboard', icon: ChartBarIcon },
-      { name: 'Marketing Calendar', path: '/strategy/calendar', icon: CalendarIcon },
+      { name: 'Marketing Calendar', path: '/dashboard/calendar', icon: CalendarIcon },
       { name: 'Business DNA', path: '/strategy/business-dna', icon: BeakerIcon },
       { name: 'Marketing Platforms', path: '/strategy/platforms', icon: ComputerDesktopIcon }
     ]

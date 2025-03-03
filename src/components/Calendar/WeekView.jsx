@@ -5,7 +5,7 @@ import ShopifyLogo from '../icons/ShopifyLogo';
 import MetaLogo from '../icons/MetaLogo';
 import { useNavigate } from 'react-router-dom';
 
-function WeekView({ currentDate, events, setEvents, campaigns, showSuggestions, dismissed, onDismiss }) {
+function WeekView({ currentDate, events=[], setEvents, campaigns=[], showSuggestions, dismissed, onDismiss }) {
   const navigate = useNavigate();
 
   const getWeekDays = (date) => {

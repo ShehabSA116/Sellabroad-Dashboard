@@ -5,7 +5,7 @@ import ShopifyLogo from '../icons/ShopifyLogo';
 import MetaLogo from '../icons/MetaLogo';
 import { useNavigate } from 'react-router-dom';
 
-function MonthView({ currentDate, events, setEvents, campaigns, showSuggestions, dismissed, onDismiss }) {
+function MonthView({ currentDate, events = [], setEvents, campaigns = [], showSuggestions, dismissed, onDismiss }) {
   const navigate = useNavigate();
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const getDaysInMonth = (date) => {
