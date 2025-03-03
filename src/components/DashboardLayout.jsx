@@ -6,7 +6,7 @@ function DashboardLayout() {
   return (
     <div className='flex'>
         <Sidebar />
-        <main className='flex'>
+        <main > 
         <Outlet />
         </main>
     </div>

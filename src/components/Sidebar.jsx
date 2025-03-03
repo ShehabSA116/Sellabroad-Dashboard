@@ -30,25 +30,25 @@ const menuSections = {
     items: [
       { 
         name: 'New Markets', 
-        path: '/onboarding/markets', 
+        path: '/dashboard/markets', 
         icon: GlobeAltIcon, 
         description: 'Select your current and target markets' 
       },
       { 
         name: 'Product Information', 
-        path: '/onboarding/products', 
+        path: '/dashboard/products', 
         icon: CubeIcon, 
         description: 'Product details and compliance check' 
       },
       { 
         name: 'Demand Forecast', 
-        path: '/onboarding/forecast', 
+        path: '/dashboard/forecast', 
         icon: ChartBarIcon, 
         description: 'Connect store and view demand analysis' 
       },
       { 
         name: 'Upload Documents', 
-        path: '/onboarding/documents', 
+        path: '/dashboard/documents', 
         icon: ArrowUpTrayIcon, 
         description: 'Business verification documents' 
       }
@@ -98,7 +98,7 @@ const menuSections = {
     icon: GlobeAltIcon,
     items: [
       { name: 'Upload Content', path: '/upload', icon: ArrowUpTrayIcon },
-      { name: 'Inventory', path: '/inventory', icon: CubeIcon },
+      { name: 'Inventory', path: '/dashboard/inventory', icon: CubeIcon },
       { name: 'Marketplaces', path: '/marketplace', icon: BuildingStorefrontIcon },
       { name: 'DTC Websites', path: '/dtc-websites', icon: GlobeAltIcon }
     ]
