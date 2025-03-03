@@ -20,7 +20,7 @@ import {
   UserGroupIcon,
   ArrowLeftStartOnRectangleIcon
 } from '@heroicons/react/24/outline';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {AiOutlineClose,AiOutlineMenu} from 'react-icons/ai'
 import { motion } from 'framer-motion';
 
@@ -110,6 +110,19 @@ export default function Sidebar() {
   const [open, setOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
+  useEffect(() => {
+    const handleResize = () => {
+      const newIsMobile = window.innerWidth < 768;
+      setIsMobile(newIsMobile);
+      if (!newIsMobile) {
+        setOpen(false);
+      }
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const toggleSection = (section) => {
     setExpandedSections(prev => ({
       ...prev,
@@ -122,30 +135,45 @@ export default function Sidebar() {
   };
 
   return (
-    <div>
-      <button onClick={toggleSidebar}>
-        {!open ? (
-          <AiOutlineMenu size={28} className='md:hidden ml-3 pl-1 mt-10' />
-        ) : (
-          <AiOutlineClose size={22} className='hidden ml-3 mt-3' />
-        )}
-      </button>
+    <>
+      {/* Mobile menu button */}
+      {isMobile && (
+        <button onClick={toggleSidebar} className="fixed top-4 left-4 z-50">
+          <AiOutlineMenu size={28} />
+        </button>
+      )}
+
+      {/* Overlay for mobile */}
+      {isMobile && open && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-40"
+          onClick={toggleSidebar}
+        />
+      )}
 
       <motion.div 
-        className="md:block w-64 min-h-screen bg-white border-r border-gray-200 fixed md:static top-0 left-0 z-50"
-        initial={{ x: isMobile ? -256 : 0 }}
-        animate={{ x: isMobile ? (open ? 0 : -256) : 0 }}
+        className={`
+          w-64 min-h-screen bg-white border-r border-gray-200 z-50
+          ${isMobile ? 'fixed' : 'sticky top-0'}
+        `}
+        initial={false}
+        animate={{ x: isMobile && !open ? -256 : 0 }}
         transition={{ duration: 0.3 }}
-        style={{ display: !isMobile ? 'block' : (open ? 'block' : 'none') }}
       >
         <div className="p-6 flex flex-col h-full">
           <div className="flex items-center mb-8">
-            <section className='flex items-center flex-col'>
-              <button onClick={toggleSidebar} className='mr-44 mb-3'>
-                <AiOutlineClose size={25} className='md:hidden' />
-              </button>
+            <section className='flex items-center flex-col w-full'>
+              {isMobile && (
+                <button onClick={toggleSidebar} className="self-end mb-3">
+                  <AiOutlineClose size={25} />
+                </button>
+              )}
               <Link to="/" className="text-2xl font-bold text-indigo-600">
-                <img src="https://i.ibb.co/YkwGqLQ/Screenshot-2024-11-14-at-3-38-45-PM-removebg-preview-1.png" alt="SellAbroad.io" className="h-12" />
+                <img 
+                  src="https://i.ibb.co/YkwGqLQ/Screenshot-2024-11-14-at-3-38-45-PM-removebg-preview-1.png" 
+                  alt="SellAbroad.io" 
+                  className="h-12" 
+                />
               </Link>
             </section>
           </div>
@@ -158,7 +186,7 @@ export default function Sidebar() {
             Back to Website
           </Link>
 
-          <nav className="space-y-1 flex-1">
+          <nav className="space-y-1 flex-1 overflow-y-auto">
             {Object.entries(menuSections).map(([section, { icon: SectionIcon, items }]) => (
               <div key={section} className="space-y-1">
                 <button
@@ -190,6 +218,7 @@ export default function Sidebar() {
                         key={item.path}
                         to={item.path}
                         className="flex flex-col px-4 py-2 text-sm rounded-lg text-gray-700 hover:bg-gray-50"
+                        onClick={isMobile ? toggleSidebar : undefined}
                       >
                         <div className="flex items-center">
                           <item.icon className="w-5 h-5 mr-3" />
@@ -214,6 +243,6 @@ export default function Sidebar() {
           </button>
         </div>
       </motion.div>
-    </div>
+    </>
   );
 }

@@ -26,7 +26,8 @@ function App() {
           <Route path="inventory" element={<Inventory />} />
           <Route path="markets" element={<NewMarkets />} />
           <Route path="forecast" element={<DemandForecast />} />
-          <Route path="documents" element={<UploadDocuments />} /> */}
+          <Route path="documents" element={<UploadDocuments />} /> 
+        </Route>
       </Routes>
     </Router>
   );
