@@ -7,7 +7,7 @@ export default function ForgotPassword() {
       title="Reset your password"
       subtitle="Enter your email address and we'll send you an OTP code to reset your password."
     >
-      <form className="space-y-6">
+      <form className="space-y-8 py-6">
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700">
             Email address
@@ -17,6 +17,7 @@ export default function ForgotPassword() {
               id="email"
               name="email"
               type="email"
+              placeholder="Enter your email address"
               autoComplete="email"
               required
               className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
