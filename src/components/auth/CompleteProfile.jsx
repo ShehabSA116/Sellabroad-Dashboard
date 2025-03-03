@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import SidePanel from '../common/SidePanel';
-import Logo from '../Logo';
+import SidePanel from '../icons/SidePanel';
+import Logo from '../icons/Logo';
 
 export default function CompleteProfile() {
   return (
