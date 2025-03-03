@@ -5,9 +5,9 @@ export default function ForgotPassword() {
   return (
     <AuthLayout
       title="Reset your password"
-      subtitle="Enter your email address and we'll send you a link to reset your password."
+      subtitle="Enter your email address and we'll send you an OTP code to reset your password."
     >
-      <form className="space-y-6">
+      <form className="space-y-8 py-6">
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700">
             Email address
@@ -17,6 +17,7 @@ export default function ForgotPassword() {
               id="email"
               name="email"
               type="email"
+              placeholder="Enter your email address"
               autoComplete="email"
               required
               className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
@@ -29,7 +30,7 @@ export default function ForgotPassword() {
             type="submit"
             className="flex w-full justify-center rounded-md border border-transparent bg-[#0049ac] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#0049ac]/90 focus:outline-none focus:ring-2 focus:ring-[#0049ac] focus:ring-offset-2"
           >
-            Send reset link
+            Send OTP Code
           </button>
         </div>
 

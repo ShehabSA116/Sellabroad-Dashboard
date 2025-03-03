@@ -8,6 +8,7 @@ import UploadDocuments from "./components/onboarding/UploadDocuments";
 import VerifyOtp from "./components/auth/VerifyOtp";
 import AuthenticateLayout from "./components/AuthenticateLayout";
 
+import ForgotPassword from './components/auth/ForgotPassword';
 function App() {
   return (
     <Router>
@@ -25,8 +26,7 @@ function App() {
           <Route path="inventory" element={<Inventory />} />
           <Route path="markets" element={<NewMarkets />} />
           <Route path="forecast" element={<DemandForecast />} />
-          <Route path="documents" element={<UploadDocuments />} />
-        </Route>
+          <Route path="documents" element={<UploadDocuments />} /> */}
       </Routes>
     </Router>
   );
