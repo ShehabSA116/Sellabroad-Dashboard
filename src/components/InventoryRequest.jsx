@@ -1,4 +1,4 @@
-function InventoryRequest() {
+export default function InventoryRequest() {
     return (
         <div>
             <h1>Inventory Request</h1>
