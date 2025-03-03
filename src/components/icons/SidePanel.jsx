@@ -1,8 +1,23 @@
 import { ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
 import { useNavigate, useLocation } from 'react-router-dom';
-
+import React from 'react';
+import Carousel from 'react-material-ui-carousel'
+import { Paper, Button } from '@mui/material'
 export default function SidePanel({ title, subtitle, steps, currentStep, completedSteps }) {
-
+  const brandImages = [
+    '../icons/brands/atc.webp',
+    '../icons/brands/beautypillow.png',
+    '../icons/brands/blanco.png',
+    '../icons/brands/magnum.png',
+    '../icons/brands/novimed.png',
+    '../icons/brands/nydirect.jpg',
+    '../icons/brands/opontia.png',
+    '../icons/brands/saje.png',
+    '../icons/brands/saxx.png',
+    '../icons/brands/silverjeans.png',
+    '../icons/brands/suetables.png',
+    '../icons/brands/wellca.png'
+  ];
   const handleSignOut = async () => {
     try {
       //await signOut();
@@ -29,7 +44,11 @@ export default function SidePanel({ title, subtitle, steps, currentStep, complet
         <div className="w-full aspect-video bg-white/10 rounded-xl mb-8">
           {/* Slideshow will go here */}
           <div className="h-full flex items-center justify-center text-white/50">
-            Slideshow Placeholder
+          <Carousel>
+            {
+                brandImages.map( (item, i) => <Item key={i} item={item} /> )
+            }
+        </Carousel>
           </div>
         </div>
       </div>
@@ -46,4 +65,18 @@ export default function SidePanel({ title, subtitle, steps, currentStep, complet
       )}
     </div>
   );
+}
+
+function Item(props)
+{
+    return (
+        <Paper>
+            <h2>{props.item.name}</h2>
+            <p>{props.item.description}</p>
+
+            <Button className="CheckButton">
+                Check it out!
+            </Button>
+        </Paper>
+    )
 }

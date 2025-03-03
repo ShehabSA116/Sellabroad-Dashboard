@@ -3,20 +3,6 @@ import Logo from '../icons/Logo';
 import SidePanel from '../icons/SidePanel';
 
 export default function AuthLayout({ children, title, subtitle }) {
-  const brandImages = [
-    '../icons/brands/atc.webp',
-    '../icons/brands/beautypillow.png',
-    '../icons/brands/blanco.png',
-    '../icons/brands/magnum.png',
-    '../icons/brands/novimed.png',
-    '../icons/brands/nydirect.jpg',
-    '../icons/brands/opontia.png',
-    '../icons/brands/saje.png',
-    '../icons/brands/saxx.png',
-    '../icons/brands/silverjeans.png',
-    '../icons/brands/suetables.png',
-    '../icons/brands/wellca.png'
-  ];
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {/* Hide SidePanel on mobile with hidden md:block */}
@@ -56,3 +42,4 @@ export default function AuthLayout({ children, title, subtitle }) {
     </div>
   );
 } 
+
