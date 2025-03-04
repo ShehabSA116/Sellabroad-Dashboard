@@ -5,19 +5,32 @@ import Inventory from './components/InventoryRequest';
 import NewMarkets from './components/onboarding/NewMarkets';
 import DemandForecast from './components/onboarding/DemandForecast';
 import UploadDocuments from "./components/onboarding/UploadDocuments";
+import VerifyOtp from "./components/auth/VerifyOtp";
+import AuthenticateLayout from "./components/AuthenticateLayout";
 import ForgotPassword from './components/auth/ForgotPassword';
+import ResetPassword from './components/auth/ResetPassword';
+
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<ForgotPassword />} />
-        {/* <Route path="/" element={<Navigate to="/dashboard"  />} />
+        <Route path="/" element={<Navigate to="/dashboard" />} />
+        
+        {/* Authentication routes */}
+        <Route path="/auth" element={<AuthenticateLayout />}>
+          <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="verify-otp" element={<VerifyOtp />} />
+          <Route path="reset-password" element={<ResetPassword />} />
+        </Route>
+
+        {/* Dashboard routes */}
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route path="calendar" element={<Calendar />} />
           <Route path="inventory" element={<Inventory />} />
           <Route path="markets" element={<NewMarkets />} />
           <Route path="forecast" element={<DemandForecast />} />
-          <Route path="documents" element={<UploadDocuments />} /> */}
+          <Route path="documents" element={<UploadDocuments />} /> 
+        </Route>
       </Routes>
     </Router>
   );

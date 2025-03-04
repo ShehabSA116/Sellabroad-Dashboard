@@ -3,7 +3,7 @@ import AuthLayout from './AuthLayout';
 
 export default function ForgotPassword() {
   return (
-    <AuthLayout
+    <div
       title="Reset your password"
       subtitle="Enter your email address and we'll send you an OTP code to reset your password."
     >
@@ -43,6 +43,6 @@ export default function ForgotPassword() {
           </Link>
         </div>
       </form>
-    </AuthLayout>
+    </div>
   );
 } 

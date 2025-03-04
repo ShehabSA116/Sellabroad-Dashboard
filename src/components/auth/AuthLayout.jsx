@@ -19,7 +19,7 @@ export default function AuthLayout({ children, title, subtitle }) {
           <div className="sm:mx-auto sm:w-full sm:max-w-md">
             <div className="flex justify-center">
               <Link to="/">
-                <Logo className="h-12 w-auto" />
+                <Logo className="h-15 w-auto"  />
               </Link>
             </div>
             <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">

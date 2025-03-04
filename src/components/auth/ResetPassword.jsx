@@ -2,7 +2,7 @@ import AuthLayout from './AuthLayout';
 
 export default function ResetPassword() {
   return (
-    <AuthLayout
+    <div
       title="Set new password"
       subtitle="Please enter your new password below."
     >
@@ -46,6 +46,6 @@ export default function ResetPassword() {
           </button>
         </div>
       </form>
-    </AuthLayout>
+    </div>
   );
 } 
