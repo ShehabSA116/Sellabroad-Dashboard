@@ -7,8 +7,9 @@ import DemandForecast from './components/onboarding/DemandForecast';
 import UploadDocuments from "./components/onboarding/UploadDocuments";
 import VerifyOtp from "./components/auth/VerifyOtp";
 import AuthenticateLayout from "./components/AuthenticateLayout";
-
 import ForgotPassword from './components/auth/ForgotPassword';
+import ResetPassword from './components/auth/ResetPassword';
+
 function App() {
   return (
     <Router>
@@ -17,7 +18,9 @@ function App() {
         
         {/* Authentication routes */}
         <Route path="/auth" element={<AuthenticateLayout />}>
+          <Route path="forgot-password" element={<ForgotPassword />} />
           <Route path="verify-otp" element={<VerifyOtp />} />
+          <Route path="reset-password" element={<ResetPassword />} />
         </Route>
 
         {/* Dashboard routes */}

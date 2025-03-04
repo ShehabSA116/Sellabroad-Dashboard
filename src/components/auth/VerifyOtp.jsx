@@ -15,7 +15,7 @@ export default function VerifyOtp() {
         separator="-" 
         onChange={(newOtpArray) => setOtp(newOtpArray.join(''))} 
       />
-      <button className="w-full mt-4 bg-blue-800 text-white px-4 py-2 rounded-md hover:opacity-80 transition-colors duration-200">
+      <button className="w-full mt-4 bg-[#0049ac] text-white px-4 py-2 rounded-md hover:opacity-80 transition-colors duration-200">
         Verify OTP
       </button>
     </div>
