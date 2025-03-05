@@ -36,7 +36,7 @@ export default function ForgotPassword() {
 
         <div className="text-center">
           <Link
-            to="/signin"
+            to="/auth/signin"
             className="text-sm font-medium text-[#0049ac] hover:text-[#0049ac]/90"
           >
             Return to sign in
