@@ -9,18 +9,21 @@ import VerifyOtp from "./components/auth/VerifyOtp";
 import AuthenticateLayout from "./components/AuthenticateLayout";
 import ForgotPassword from './components/auth/ForgotPassword';
 import ResetPassword from './components/auth/ResetPassword';
+import SignIn from './components/auth/SignIn';
+import SignUp from './components/auth/SignUp';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/auth/verify-otp" />} />
         
         {/* Authentication routes */}
         <Route path="/auth" element={<AuthenticateLayout />}>
           <Route path="forgot-password" element={<ForgotPassword />} />
           <Route path="verify-otp" element={<VerifyOtp />} />
           <Route path="reset-password" element={<ResetPassword />} />
+          <Route path="signin" element={<SignIn />} />
+          <Route path="signup" element={<SignUp />} />
         </Route>
 
         {/* Dashboard routes */}

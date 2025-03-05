@@ -3,6 +3,7 @@ import AuthLayout from './AuthLayout';
 import GoogleButton from "react-google-button";
 
 export default function SignIn() {
+  
   return (
     <AuthLayout
       title="Welcome back"
