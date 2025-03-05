@@ -48,3 +48,5 @@ export default function OTPInput({ length = 6, separator = '-', onChange }) {
     </div>
   );
 }
+
+

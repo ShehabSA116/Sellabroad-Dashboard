@@ -10,11 +10,7 @@ function AuthenticateLayout() {
       title: "Verify your OTP",
       subtitle: "Enter the OTP sent to your email address"
     },
-    // Add more routes as needed, for example:
-    // '/auth/login': {
-    //   title: "Welcome Back",
-    //   subtitle: "Please enter your credentials"
-    // }
+   
   }[location.pathname] || {};
 
   return (

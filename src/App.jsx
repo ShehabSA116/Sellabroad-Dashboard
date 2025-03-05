@@ -14,7 +14,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/dashboard" />} />
+        <Route path="/" element={<Navigate to="/auth/verify-otp" />} />
         
         {/* Authentication routes */}
         <Route path="/auth" element={<AuthenticateLayout />}>
