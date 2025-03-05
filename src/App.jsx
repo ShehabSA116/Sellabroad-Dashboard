@@ -15,7 +15,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/auth/signin" />} />
+        <Route path="/" element={<Navigate to="/auth/signup" />} />
         
         {/* Authentication routes */}
         <Route path="/auth" element={<AuthenticateLayout />}>
@@ -25,7 +25,7 @@ function App() {
           <Route path="signin" element={<SignIn />} />
           <Route path="signup" element={<SignUp />} />
         </Route>
-
+        
         {/* Dashboard routes */}
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route path="calendar" element={<Calendar />} />
