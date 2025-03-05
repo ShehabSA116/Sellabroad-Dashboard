@@ -9,8 +9,8 @@ const authService = {
     return response.data;
   },
 
-  verifyOtp: async (otp) => {
-    const response = await api.post('/auth/verify-otp', { otp });
+  verifyOtp: async (email, otp) => {
+    const response = await api.post('/auth/verify-otp', { email, otp });
     return response.data;
   },
 
@@ -20,6 +20,28 @@ const authService = {
       localStorage.setItem('token', response.data.token);
     }
     return response.data;
+  },
+
+  forgotPassword: async (email) => {
+    const response = await api.post('/auth/forgot-password', { email });
+    return response.data;
+  },
+
+  resetPassword: async (token, newPassword) => {
+    const response = await api.post('/auth/reset-password', { token, newPassword });
+    return response.data;
+  },
+
+  logout: () => {
+    localStorage.removeItem('token');
+  },
+
+  getCurrentUser: () => {
+    return localStorage.getItem('token');
+  },
+
+  isAuthenticated: () => {
+    return !!localStorage.getItem('token');
   }
 };
 
