@@ -11,7 +11,10 @@ export default function SignUp() {
     confirmPassword: '',
     firstName: '',
     lastName: '',
-    companyName: ''
+    companyName: '',
+    phoneNumber: '',
+    companyWebsite: '',
+    residenceCountry: ''
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -37,12 +40,17 @@ export default function SignUp() {
     }
 
     try {
+      // Create the fullName by concatenating firstName and lastName
+      const fullName = `${formData.firstName} ${formData.lastName}`.trim();
+
       const response = await authService.signup({
         email: formData.email,
         password: formData.password,
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        companyName: formData.companyName
+        fullName: fullName,
+        companyName: formData.companyName,
+        phoneNumber: formData.phoneNumber,
+        companyWebsite: formData.companyWebsite,
+        residenceCountry: formData.residenceCountry
       });
 
       // If signup is successful and returns a token, navigate to dashboard
@@ -130,6 +138,24 @@ export default function SignUp() {
         </div>
 
         <div>
+          <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
+            Phone Number
+          </label>
+          <div className="mt-1">
+            <input
+              type="tel"
+              name="phoneNumber"
+              id="phoneNumber"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+              placeholder="+1234567890"
+              required
+              className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
+            />
+          </div>
+        </div>
+
+        <div>
           <label htmlFor="companyName" className="block text-sm font-medium text-gray-700">
             Company Name
           </label>
@@ -143,6 +169,48 @@ export default function SignUp() {
               required
               className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
             />
+          </div>
+        </div>
+
+        <div>
+          <label htmlFor="companyWebsite" className="block text-sm font-medium text-gray-700">
+            Company Website
+          </label>
+          <div className="mt-1">
+            <input
+              type="url"
+              name="companyWebsite"
+              id="companyWebsite"
+              value={formData.companyWebsite}
+              onChange={handleChange}
+              placeholder="https://example.com"
+              required
+              className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label htmlFor="residenceCountry" className="block text-sm font-medium text-gray-700">
+            Country of Residence
+          </label>
+          <div className="mt-1">
+            <select
+              name="residenceCountry"
+              id="residenceCountry"
+              value={formData.residenceCountry}
+              onChange={handleChange}
+              required
+              className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
+            >
+              <option value="">Select a country</option>
+              <option value="UAE">United Arab Emirates</option>
+              <option value="USA">United States</option>
+              <option value="UK">United Kingdom</option>
+              <option value="Canada">Canada</option>
+              <option value="Australia">Australia</option>
+              <option value="New Zealand">New Zealand</option>
+            </select>
           </div>
         </div>
 
