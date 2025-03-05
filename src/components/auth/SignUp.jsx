@@ -5,7 +5,7 @@ import GoogleButton from "react-google-button";
 
 export default function SignUp() {
   return (
-    <AuthLayout
+    <div
       title="Create your account"
       subtitle={
         <>
@@ -169,6 +169,6 @@ export default function SignUp() {
           <GoogleButton />
         </div>
       </form>
-    </AuthLayout>
+    </div>
   );
 } 

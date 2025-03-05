@@ -1,10 +1,9 @@
 import { Link } from 'react-router-dom';
-import AuthLayout from './AuthLayout';
 import GoogleButton from "react-google-button";
 
 export default function SignIn() {
   return (
-    <AuthLayout
+    <div
       title="Welcome back"
       subtitle={
         <>
@@ -80,6 +79,6 @@ export default function SignIn() {
           <GoogleButton />
         </div>
       </form>
-    </AuthLayout>
+    </div>
   );
 } 
