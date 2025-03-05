@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import GoogleButton from "react-google-button";
 
 export default function SignIn() {
-  
   return (
     <div
       title="Welcome back"
