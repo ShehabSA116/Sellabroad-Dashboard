@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import GoogleButton from "react-google-button";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import authService from '../../Services/authService';
 
@@ -12,14 +12,23 @@ export default function SignIn() {
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+  useEffect(() => {
+    const savedToken = localStorage.getItem('token');
+    if (savedToken) {
+      navigate('/dashboard'); // Auto-login if token exists
+    }
+  }, [navigate]);
+
+  const handleRememberMe = () => {
+    setRememberMe(!rememberMe);
   };
+
+  const handleChange = ({ target: { name, value } }) => {
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,6 +44,9 @@ export default function SignIn() {
 
       // If signup is successful and returns a token, navigate to dashboard
       if (response.token) {
+        if (rememberMe) {
+          localStorage.setItem('token', response.token);
+        }
         navigate('/dashboard');
       } else {
         setError('Invalid email or password');
@@ -102,6 +114,7 @@ export default function SignIn() {
               id="remember-me"
               name="remember-me"
               type="checkbox"
+              onChange={handleRememberMe}
               className="h-4 w-4 rounded border-gray-300 text-[#0049ac] focus:ring-[#0049ac]"
             />
             <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
