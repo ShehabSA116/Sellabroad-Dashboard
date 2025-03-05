@@ -11,11 +11,11 @@ import ForgotPassword from './components/auth/ForgotPassword';
 import ResetPassword from './components/auth/ResetPassword';
 import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
-
 function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Navigate to="/auth/signup" />} />
         
         {/* Authentication routes */}
         <Route path="/auth" element={<AuthenticateLayout />}>

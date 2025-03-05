@@ -8,8 +8,6 @@ export default function VerifyOtp() {
 
   return (
     <div className="flex flex-col items-center justify-center gap-10">
-      <h2 className="text-2xl font-bold text-center text-gray-900">{title}</h2>
-      <p className="text-center text-sm text-gray-600">{subtitle}</p>
       <OTPInput 
         length={6} 
         separator="-" 
