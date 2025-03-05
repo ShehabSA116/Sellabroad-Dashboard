@@ -3,8 +3,6 @@ import { useOutletContext } from 'react-router-dom';
 import OTPInput from './OTPInput';
 
 export default function VerifyOtp() {
-  const [otp, setOtp] = useState('');
-  const { title, subtitle } = useOutletContext();
 
   return (
     <div className="flex flex-col items-center justify-center gap-10">
