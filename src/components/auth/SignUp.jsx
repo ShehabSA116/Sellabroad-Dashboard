@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import GoogleButton from "react-google-button";
-import authService from '../../services/authService';
+import authService from '../../Services/authService';
 
 export default function SignUp() {
   const navigate = useNavigate();
