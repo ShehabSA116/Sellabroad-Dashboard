@@ -8,7 +8,7 @@ export default function SignIn() {
       subtitle={
         <>
           New to our platform?{' '}
-          <Link to="/signup" className="font-medium text-[#0049ac] hover:text-[#0049ac]/90">
+          <Link to="/auth/signup" className="font-medium text-[#0049ac] hover:text-[#0049ac]/90">
             Create an account
           </Link>
         </>
@@ -61,7 +61,7 @@ export default function SignIn() {
           </div>
 
           <div className="text-sm">
-            <Link to="/forgot-password" className="font-medium text-[#0049ac] hover:text-[#0049ac]/90">
+            <Link to="/auth/forgot-password" className="font-medium text-[#0049ac] hover:text-[#0049ac]/90">
               Forgot your password?
             </Link>
           </div>
