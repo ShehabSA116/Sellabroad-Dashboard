@@ -25,7 +25,7 @@ function App() {
           <Route path="signin" element={<SignIn />} />
           <Route path="signup" element={<SignUp />} />
         </Route>
-
+        
         {/* Dashboard routes */}
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route path="calendar" element={<Calendar />} />
