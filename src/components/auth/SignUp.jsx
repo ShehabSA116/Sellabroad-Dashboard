@@ -68,17 +68,17 @@ export default function SignUp() {
   };
 
   return (
-    <div
-      title="Create your account"
-      subtitle={
-        <>
+    <div className="max-w-md mx-auto p-6">
+      <div className="text-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-900">Create your account</h2>
+        <p className="mt-2 text-sm text-gray-600">
           Already have an account?{' '}
           <Link to="/signin" className="font-medium text-[#0049ac] hover:text-[#0049ac]/90">
             Sign in
           </Link>
-        </>
-      }
-    >
+        </p>
+      </div>
+
       <form onSubmit={handleSubmit} className="space-y-6">
         {error && (
           <div className="text-red-500 text-sm">{error}</div>
@@ -263,4 +263,4 @@ export default function SignUp() {
       </form>
     </div>
   );
-} 
+}

@@ -29,7 +29,15 @@ export default function SignIn() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
   
-
+  const handleGoogleLogin = async () => {
+    try {
+      const response = await authService.googleLogin();
+      console.log(response);
+    } catch (error) {
+      console.error('Google login error:', error);
+    }
+  };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -138,7 +146,7 @@ export default function SignIn() {
           </button>
         </div>
         <div className='flex justify-center'>
-          <GoogleButton />
+          <GoogleButton onClick={handleGoogleLogin}/>
         </div>
       </form>
     </div>
