@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import AuthLayout from './AuthLayout';
 import GoogleButton from "react-google-button";
 
 export default function SignUp() {
