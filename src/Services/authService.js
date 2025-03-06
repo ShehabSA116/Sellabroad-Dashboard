@@ -33,7 +33,14 @@ const authService = {
   },
 
   resetPassword: async (token, newPassword) => {
-    const response = await api.post('/auth/reset-password', { token, newPassword });
+    const response = await api.post('/auth/reset-password', 
+      { password: newPassword },
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }
+    );
     return response.data;
   },
 

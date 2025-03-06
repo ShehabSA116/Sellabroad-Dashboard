@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import DashboardLayout from './components/DashboardLayout';
-import Calendar from './components/Calendar/Calendar';
-import Inventory from './components/InventoryRequest';
+import Calendar from './pages/Calendar';
+import Inventory from './pages/Inventory';
 import NewMarkets from './components/onboarding/NewMarkets';
 import DemandForecast from './components/onboarding/DemandForecast';
 import UploadDocuments from "./components/onboarding/UploadDocuments";
@@ -9,8 +9,8 @@ import VerifyOtp from "./components/auth/VerifyOtp";
 import AuthenticateLayout from "./components/AuthenticateLayout";
 import ForgotPassword from './components/auth/ForgotPassword';
 import ResetPassword from './components/auth/ResetPassword';
-import SignIn from './components/auth/SignIn';
-import SignUp from './components/auth/SignUp';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
 import AuthCallback from './components/auth/authCallback';
 function App() {
   return (
