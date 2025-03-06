@@ -11,15 +11,32 @@ export default function SignIn() {
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+  useEffect(() => {
+    const savedToken = localStorage.getItem('token');
+    if (savedToken) {
+      navigate('/dashboard'); // Auto-login if token exists
+    }
+  }, [navigate]);
+
+  const handleRememberMe = () => {
+    setRememberMe(!rememberMe);
   };
 
+  const handleChange = ({ target: { name, value } }) => {
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+  
+  const handleGoogleLogin = async () => {
+    try {
+      const response = await authService.googleLogin();
+      console.log(response);
+    } catch (error) {
+      console.error('Google login error:', error);
+    }
+  };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -103,21 +120,8 @@ export default function SignIn() {
             {isLoading ? 'Signing in...' : 'Sign in'}
           </button>
         </div>
-
-        <div className="flex items-center justify-center">
-          <span className="text-sm text-gray-500">
-            Don't have an account?{' '}
-            <Link
-              to="/auth/signup"
-              className="font-medium text-[#0049ac] hover:text-[#0049ac]/90"
-            >
-              Sign up
-            </Link>
-          </span>
-        </div>
-
-        <div className="flex justify-center">
-          <GoogleButton />
+        <div className='flex justify-center'>
+          <GoogleButton onClick={handleGoogleLogin}/>
         </div>
       </form>
     </div>

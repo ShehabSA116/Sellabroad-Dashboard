@@ -44,6 +44,11 @@ const authService = {
     return response.data;
   },
 
+  googleLogin: async () => {
+    const response = await api.get('/auth/google');
+    return response.data;
+  },
+
   logout: () => {
     localStorage.removeItem('token');
   },
@@ -57,4 +62,4 @@ const authService = {
   }
 };
 
-export default authService; 
+export default authService;
