@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import GoogleButton from "react-google-button";
 import authService from '../../Services/authService';
-
+import countryService from '../../Services/countryService';
 export default function SignUp() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -18,7 +18,7 @@ export default function SignUp() {
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
+  const [countries, setCountries] = useState([]);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -66,6 +66,20 @@ export default function SignUp() {
       setIsLoading(false);
     }
   };
+
+
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const response = await countryService.getCountries();
+        setCountries(response);
+      } catch (error) { 
+        console.error('Error fetching countries:', error);
+      }
+    };
+    fetchCountries();
+  }, []);
+
 
   return (
     <div className="w-[80%] mx-auto p-6">
@@ -203,12 +217,11 @@ export default function SignUp() {
               className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
             >
               <option value="">Select a country</option>
-              <option value="UAE">United Arab Emirates</option>
-              <option value="USA">United States</option>
-              <option value="UK">United Kingdom</option>
-              <option value="Canada">Canada</option>
-              <option value="Australia">Australia</option>
-              <option value="New Zealand">New Zealand</option>
+              {countries.map(country => (
+                <option key={country.id} value={country.id}>
+                  {country.name}
+                </option>
+              ))}
             </select>
           </div>
         </div>
