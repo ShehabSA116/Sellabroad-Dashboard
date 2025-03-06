@@ -68,7 +68,7 @@ export default function SignUp() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6">
+    <div className="w-[80%] mx-auto p-6">
       <div className="text-center mb-6">
         <h2 className="text-2xl font-bold text-gray-900">Create your account</h2>
         <p className="mt-2 text-sm text-gray-600">
@@ -84,7 +84,7 @@ export default function SignUp() {
           <div className="text-red-500 text-sm">{error}</div>
         )}
         
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
               First name
@@ -178,7 +178,6 @@ export default function SignUp() {
           </label>
           <div className="mt-1">
             <input
-              type="url"
               name="companyWebsite"
               id="companyWebsite"
               value={formData.companyWebsite}
@@ -257,8 +256,8 @@ export default function SignUp() {
             {isLoading ? 'Signing up...' : 'Create account'}
           </button>
         </div>
-        <div className='flex justify-center'>
-          <GoogleButton />
+        <div className='w-full'>
+          <GoogleButton style={{ width: '100%' }} />
         </div>
       </form>
     </div>
