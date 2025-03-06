@@ -1,12 +1,71 @@
-import AuthLayout from './AuthLayout';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import authService from '../../Services/authService';
 
 export default function ResetPassword() {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    password: '',
+    confirmPassword: ''
+  });
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setIsLoading(true);
+
+    // Basic validation
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      // Get the token that was stored after OTP verification
+      const token = localStorage.getItem('resetToken');
+      
+      if (!token) {
+        setError('Reset token not found. Please try the forgot password process again.');
+        return;
+      }
+
+      await authService.resetPassword(token, formData.password);
+      
+      // Clear the stored tokens
+      localStorage.removeItem('resetToken');
+      localStorage.removeItem('resetEmail');
+      
+      alert('Password reset successfully');
+      // Navigate to login page
+      navigate('/auth/signin');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to reset password');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div
       title="Set new password"
       subtitle="Please enter your new password below."
     >
-      <form className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {error && (
+          <div className="text-red-500 text-sm text-center">{error}</div>
+        )}
+
         <div>
           <label htmlFor="password" className="block text-sm font-medium text-gray-700">
             New password
@@ -16,6 +75,8 @@ export default function ResetPassword() {
               id="password"
               name="password"
               type="password"
+              value={formData.password}
+              onChange={handleChange}
               required
               className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
             />
@@ -31,6 +92,8 @@ export default function ResetPassword() {
               id="confirmPassword"
               name="confirmPassword"
               type="password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
               required
               className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
             />
@@ -40,9 +103,12 @@ export default function ResetPassword() {
         <div>
           <button
             type="submit"
-            className="flex w-full justify-center rounded-md border border-transparent bg-[#0049ac] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#0049ac]/90 focus:outline-none focus:ring-2 focus:ring-[#0049ac] focus:ring-offset-2"
+            disabled={isLoading}
+            className={`flex w-full justify-center rounded-md border border-transparent bg-[#0049ac] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#0049ac]/90 focus:outline-none focus:ring-2 focus:ring-[#0049ac] focus:ring-offset-2 ${
+              isLoading ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
           >
-            Reset password
+            {isLoading ? 'Resetting password...' : 'Reset password'}
           </button>
         </div>
       </form>

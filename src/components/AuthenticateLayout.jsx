@@ -10,7 +10,24 @@ function AuthenticateLayout() {
       title: "Verify your OTP",
       subtitle: "Enter the OTP sent to your email address"
     },
-   
+    '/auth/signup': {
+      title: "Create an account",
+      subtitle: "Enter your email and password to create an account"
+    },
+    '/auth/signin ': {
+      title: "Sign in to your account",
+      subtitle: "Enter your email and password to sign in"
+    },
+    '/auth/forgot-password': {
+      title: "Forgot your password?",
+      subtitle: "Enter your email to reset your password"
+    },
+    '/auth/reset-password': {
+      title: "Reset your password",
+      subtitle: "Enter your new password to reset your password"
+    },
+  
+
   }[location.pathname] || {};
 
   return (
