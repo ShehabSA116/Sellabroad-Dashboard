@@ -29,13 +29,41 @@ export default function SignIn() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
   
-  const handleGoogleLogin = async () => {
+  const handleGoogleLogin = async (e) => {
+    e.preventDefault();
     try {
-      await authService.googleLogin();
+      const { authUrl } = await authService.googleLogin();
+      
+      if (!authUrl) throw new Error('Auth URL not received');
+  
+      const width = 600, height = 600;
+      const left = (window.innerWidth - width) / 2;
+      const top = (window.innerHeight - height) / 2;
+  
+      const popup = window.open(
+        authUrl,
+        'GoogleLoginPopup',
+        `width=${width},height=${height},top=${top},left=${left},resizable=no`
+      );
+  
+      if (!popup) throw new Error('Popup blocked! Allow popups in your browser.');
+  
+      window.addEventListener('message', (event) => {
+        if (event.origin !== window.location.origin) return;
+  
+        if (event.data.token) {
+          localStorage.setItem('authToken', event.data.token);
+          navigate('/dashboard');
+        }
+      });
+      
     } catch (error) {
-      console.error('Google login error:', error);
+      console.error('Error fetching Google auth URL:', error);
     }
   };
+  
+  
+  
   
   const handleSubmit = async (e) => {
     e.preventDefault();
