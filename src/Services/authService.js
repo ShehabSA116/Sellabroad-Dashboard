@@ -38,8 +38,8 @@ const authService = {
   },
 
   googleLogin: async () => {
-    const response = await api.get('/auth/google');
-    return response.data;
+    const {authUrl} = await api.get('/auth/google');
+    window.location.href = authUrl;
   },
 
   logout: () => {

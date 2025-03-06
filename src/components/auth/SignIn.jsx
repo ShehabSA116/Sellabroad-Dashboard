@@ -3,7 +3,7 @@ import GoogleButton from "react-google-button";
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import authService from '../../Services/authService';
-
+import { toast } from 'react-toastify';
 export default function SignIn() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -31,8 +31,7 @@ export default function SignIn() {
   
   const handleGoogleLogin = async () => {
     try {
-      const response = await authService.googleLogin();
-      console.log(response);
+      await authService.googleLogin();
     } catch (error) {
       console.error('Google login error:', error);
     }
@@ -60,7 +59,7 @@ export default function SignIn() {
         setError('Invalid email or password');
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'An error occurred during signin');
+      setError(err.response?.data?.message || 'An error occurred during Sign In');
     } finally {
       setIsLoading(false);
     }
@@ -79,9 +78,6 @@ export default function SignIn() {
       }
     >
       <form onSubmit={handleSubmit} className="space-y-6">
-        {error && (
-          <div className="text-red-500 text-sm">{error}</div>
-        )}
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700">
             Email address
