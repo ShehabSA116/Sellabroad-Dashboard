@@ -11,6 +11,7 @@ import ForgotPassword from './components/auth/ForgotPassword';
 import ResetPassword from './components/auth/ResetPassword';
 import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
+import AuthCallback from './components/auth/authCallback';
 function App() {
   return (
     <Router>
@@ -24,6 +25,7 @@ function App() {
           <Route path="reset-password" element={<ResetPassword />} />
           <Route path="signin" element={<SignIn />} />
           <Route path="signup" element={<SignUp />} />
+          <Route path="callback" element={<AuthCallback />} />
         </Route>
         
         {/* Dashboard routes */}
