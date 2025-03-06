@@ -12,11 +12,12 @@ import ResetPassword from './components/auth/ResetPassword';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import AuthCallback from './components/auth/authCallback';
+import { ToastContainer } from 'react-toastify';
 function App() {
   return (
     <Router>
+      <ToastContainer />
       <Routes>
-        
         {/* Authentication routes */}
         <Route path="/auth" element={<AuthenticateLayout />}>
           <Route path="forgot-password" element={<ForgotPassword />} />

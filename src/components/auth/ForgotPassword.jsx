@@ -1,11 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import authService from '../../Services/authService';
-
+import { toast } from 'react-toastify';
 export default function ForgotPassword() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -14,16 +13,13 @@ export default function ForgotPassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
     setIsLoading(true);
     try {
       await authService.forgotPassword(email);
-      // Store email in localStorage for the OTP verification
       localStorage.setItem('resetEmail', email);
-      // Navigate to verify-otp page
       navigate('/auth/verify-otp');
     } catch (error) {
-      setError(error.response?.data?.message || 'An error occurred');
+      toast.error(error.response?.data?.message || 'An error occurred');
     } finally {
       setIsLoading(false);
     }

@@ -9,7 +9,6 @@ export default function SignIn() {
     email: '',
     password: ''
   });
-  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
@@ -45,7 +44,10 @@ export default function SignIn() {
         `width=${width},height=${height},top=${top},left=${left},resizable=no`
       );
   
-      if (!popup) throw new Error('Popup blocked! Allow popups in your browser.');
+      if (!popup) {
+        toast.error('Popup blocked! Allow popups in your browser.');
+        return;
+      }
   
       window.addEventListener('message', (event) => {
         if (event.origin !== window.location.origin) return;
@@ -57,7 +59,7 @@ export default function SignIn() {
       });
       
     } catch (error) {
-      console.error('Error fetching Google auth URL:', error);
+      toast.error('Error fetching Google auth URL:', error);
     }
   };
   
@@ -66,21 +68,14 @@ export default function SignIn() {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
     setIsLoading(true);
-
     try {
-
-      const response = await authService.login({
-        email: formData.email,
-        password: formData.password,
-      });
-
+      const response = await authService.login(formData);
       if (response.token) {
         navigate('/dashboard');
       }
     } catch (err) {
-      setError('An error occurred during Sign In');
+      toast.error(err.response?.data?.message || 'An error occurred during Sign In');
     } finally {
       setIsLoading(false);
     }

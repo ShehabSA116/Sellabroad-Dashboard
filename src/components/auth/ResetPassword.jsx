@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import authService from '../../Services/authService';
+import { toast } from 'react-toastify';
 
 export default function ResetPassword() {
   const navigate = useNavigate();
@@ -8,7 +9,6 @@ export default function ResetPassword() {
     password: '',
     confirmPassword: ''
   });
-  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -21,12 +21,11 @@ export default function ResetPassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
     setIsLoading(true);
 
     // Basic validation
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      toast.error('Passwords do not match');
       setIsLoading(false);
       return;
     }
@@ -36,7 +35,7 @@ export default function ResetPassword() {
       const token = localStorage.getItem('resetToken');
       
       if (!token) {
-        setError('Reset token not found. Please try the forgot password process again.');
+        toast.error('Reset token not found. Please try the forgot password process again.');
         return;
       }
 
@@ -50,7 +49,7 @@ export default function ResetPassword() {
       // Navigate to login page
       navigate('/auth/signin');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to reset password');
+      toast.error(err.response?.data?.message || 'Failed to reset password');
     } finally {
       setIsLoading(false);
     }
@@ -62,10 +61,6 @@ export default function ResetPassword() {
       subtitle="Please enter your new password below."
     >
       <form onSubmit={handleSubmit} className="space-y-6">
-        {error && (
-          <div className="text-red-500 text-sm text-center">{error}</div>
-        )}
-
         <div>
           <label htmlFor="password" className="block text-sm font-medium text-gray-700">
             New password
