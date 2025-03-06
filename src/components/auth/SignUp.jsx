@@ -73,9 +73,9 @@ export default function SignUp() {
         <h2 className="text-2xl font-bold text-gray-900">Create your account</h2>
         <p className="mt-2 text-sm text-gray-600">
           Already have an account?{' '}
-          <Link to="/signin" className="font-medium text-[#0049ac] hover:text-[#0049ac]/90">
-            Sign in
-          </Link>
+          <button onClick={() => navigate('/auth/signin')} className="font-medium text-[#0049ac] hover:text-[#0049ac]/90">
+            sign in
+          </button>
         </p>
       </div>
 
@@ -251,13 +251,13 @@ export default function SignUp() {
           <button
             type="submit"
             disabled={isLoading}
-            className={`flex w-full justify-center rounded-md border border-transparent bg-[#0049ac] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#0049ac]/90 focus:outline-none focus:ring-2 focus:ring-[#0049ac] focus:ring-offset-2 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`flex w-full justify-center rounded-md border border-transparent bg-[#0049ac] py-3 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#0049ac]/90 focus:outline-none focus:ring-2 focus:ring-[#0049ac] focus:ring-offset-2 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             {isLoading ? 'Signing up...' : 'Create account'}
           </button>
         </div>
         <div className='w-full'>
-          <GoogleButton style={{ width: '100%' }} />
+          <GoogleButton style={{ width: '100%', borderRadius: '0.375rem' }} />
         </div>
       </form>
     </div>
