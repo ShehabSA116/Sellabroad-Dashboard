@@ -16,7 +16,6 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/auth/signup" />} />
         
         {/* Authentication routes */}
         <Route path="/auth" element={<AuthenticateLayout />}>

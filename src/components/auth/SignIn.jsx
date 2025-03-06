@@ -77,7 +77,6 @@ export default function SignIn() {
         password: formData.password,
       });
 
-      // If signup is successful and returns a token, navigate to dashboard
       if (response.token) {
         if (rememberMe) {
           localStorage.setItem('token', response.token);
@@ -87,7 +86,7 @@ export default function SignIn() {
         setError('Invalid email or password');
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'An error occurred during Sign In');
+      setError('An error occurred during Sign In');
     } finally {
       setIsLoading(false);
     }
