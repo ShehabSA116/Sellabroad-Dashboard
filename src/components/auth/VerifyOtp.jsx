@@ -2,16 +2,30 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import OTPInput from './OTPInput';
 import authService from '../../Services/authService';
-
+import { toast } from 'react-toastify';
 export default function VerifyOtp() {
   const navigate = useNavigate();
   const [otp, setOtp] = useState('');
-  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+const handleResendOtp = async () => {
+  const email = localStorage.getItem('resetEmail');
+  if (email) {
+    try {
+      setIsLoading(true);
+      await authService.forgotPassword(email);
+      toast.success('Check your email for the OTP code');
+    } catch (err) {
+      toast.error('Failed to resend OTP');
+    } finally {
+      setIsLoading(false);
+    }
+  }
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+
     setIsLoading(true);
 
     try {
@@ -19,7 +33,7 @@ export default function VerifyOtp() {
       const email = localStorage.getItem('resetEmail');
       
       if (!email) {
-        setError('No email found. Please try the forgot password process again.');
+        toast.error('No email found. Please try the forgot password process again.');
         return;
       }
 
@@ -30,22 +44,22 @@ export default function VerifyOtp() {
         localStorage.setItem('resetToken', response.token);
         // Navigate to reset password page
         navigate('/auth/reset-password');
+        toast.success('OTP verified successfully');
+        localStorage.removeItem('resetEmail');
       } else {
-        setError('No reset token received from server');
+        toast.error('No reset token received from server');
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Invalid OTP code');
+toast.error(err.response?.data?.message || 'Invalid OTP code');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-10">
-      {error && (
-        <div className="text-red-500 text-sm text-center">{error}</div>
-      )}
-      
+    <form className="flex flex-col items-center justify-center gap-10"
+    onSubmit={handleSubmit}
+    >
       <OTPInput 
         length={6} 
         separator="-" 
@@ -62,27 +76,14 @@ export default function VerifyOtp() {
         {isLoading ? 'Verifying...' : 'Verify OTP'}
       </button>
 
-      {/* Optional: Add a resend OTP button */}
       <button
-        onClick={async () => {
-          const email = localStorage.getItem('resetEmail');
-          if (email) {
-            try {
-              setIsLoading(true);
-              await authService.forgotPassword(email);
-              setError('New OTP code sent!');
-            } catch (err) {
-              setError('Failed to resend OTP');
-            } finally {
-              setIsLoading(false);
-            }
-          }
-        }}
+        type="button"
+        onClick={handleResendOtp}
         disabled={isLoading}
-        className="text-sm text-[#0049ac] hover:text-[#0049ac]/90"
+        className="text-sm text-[#0049ac] hover:text-[#0049ac]/90 hover:underline  cursor-pointer" 
       >
-        Resend OTP
+        Resend OTP  
       </button>
-    </div>
+    </form>
   );
 }

@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-
 // Image Imports
 import atc from '../../assets/brands/atc.webp';
 import beautypillow from '../../assets/brands/beautypillow.png';
@@ -31,57 +29,36 @@ export default function SidePanel({ title, subtitle }) {
     wellca,
   ];
 
-  // Start at index 1 because index 0 is a duplicate of the last image.
-  const [currentIndex, setCurrentIndex] = useState(1);
-  const [transitionEnabled, setTransitionEnabled] = useState(true);
-  const [isJumping, setIsJumping] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState('forward'); // 'forward' or 'backward'
 
-  // Use setTimeout to auto-advance only when not in a jump.
+  // Auto-advance the carousel
   useEffect(() => {
-    if (!isJumping) {
-      const timer = setTimeout(() => {
-        setCurrentIndex(prevIndex => prevIndex + 1);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [currentIndex, isJumping]);
-
-  const right = () => {
-    setCurrentIndex(prevIndex => prevIndex + 1);
-  };
-
-  const left = () => {
-    setCurrentIndex(prevIndex => prevIndex - 1);
-  };
-
-  // Handle instant jump when reaching duplicate slides.
-  const handleTransitionEnd = () => {
-    if (currentIndex === Images.length + 1) {
-      // Reached duplicate of first image.
-      setIsJumping(true);
-      setTransitionEnabled(false);
-      setCurrentIndex(1);
-      // Wait for the next frame to ensure the position is updated
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          setTransitionEnabled(true);
-          setIsJumping(false);
-        });
-      });
-    } else if (currentIndex === 0) {
-      // Reached duplicate of last image.
-      setIsJumping(true);
-      setTransitionEnabled(false);
-      setCurrentIndex(Images.length);
-      // Wait for the next frame to ensure the position is updated
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          setTransitionEnabled(true);
-          setIsJumping(false);
-        });
-      });
-    }
-  };
+    const timer = setTimeout(() => {
+      if (direction === 'forward') {
+        if (currentIndex >= Images.length - 1) {
+          // Reached the end, change direction
+          setDirection('backward');
+          setCurrentIndex(currentIndex - 1);
+        } else {
+          // Continue moving forward
+          setCurrentIndex(currentIndex + 1);
+        }
+      } else {
+        // Moving backward
+        if (currentIndex <= 0) {
+          // Reached the beginning, change direction
+          setDirection('forward');
+          setCurrentIndex(currentIndex + 1);
+        } else {
+          // Continue moving backward
+          setCurrentIndex(currentIndex - 1);
+        }
+      }
+    }, 3000);
+    
+    return () => clearTimeout(timer);
+  }, [currentIndex, direction, Images.length]);
 
   return (
     <div className="w-[400px] bg-[#0049ac] text-white p-8 flex flex-col fixed h-screen">
@@ -95,39 +72,12 @@ export default function SidePanel({ title, subtitle }) {
 
         {/* Slideshow */}
         <div className="w-full bg-white rounded-xl mb-8 relative overflow-hidden py-2">
-          {/* Navigation Buttons */}
-          <button 
-            onClick={left}
-            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-colors"
-          >
-            <FaArrowLeft />
-          </button>
-          <button 
-            onClick={right}
-            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-colors"
-          >
-            <FaArrowRight />
-          </button>
-
           <div 
-            className="flex"
-            onTransitionEnd={handleTransitionEnd}
+            className="flex transition-transform duration-1000 ease-in-out"
             style={{
               transform: `translateX(-${currentIndex * 100}%)`,
-              transition: transitionEnabled ? "transform 1.9s ease-in-out" : "none",
             }}
           >
-            {/* Duplicate of the last image (for backward looping) */}
-            <div 
-              className="w-full flex-shrink-0 flex items-center justify-center"
-              style={{ height: '150px' }}
-            >
-              <img 
-                src={Images[Images.length - 1]} 
-                alt="brand duplicate last"
-                className="max-w-full max-h-full object-contain"
-              />
-            </div>
             {/* Actual images */}
             {Images.map((image, index) => (
               <div 
@@ -142,17 +92,6 @@ export default function SidePanel({ title, subtitle }) {
                 />
               </div>
             ))}
-            {/* Duplicate of the first image (for forward looping) */}
-            <div 
-              className="w-full flex-shrink-0 flex items-center justify-center"
-              style={{ height: '150px' }}
-            >
-              <img 
-                src={Images[0]} 
-                alt="brand duplicate first"
-                className="max-w-full max-h-full object-contain"
-              />
-            </div>
           </div>
         </div>
       </div>

@@ -1,8 +1,12 @@
+// SignUp.jsx
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import GoogleButton from "react-google-button";
+import GoogleButton from '../../ui/GoogleButton';
 import authService from '../../Services/authService';
 import countryService from '../../Services/countryService';
+import InputField from '../../ui/InputField'; // Adjust the path as needed
+import SelectField from '../../ui/SelectField';
+import { toast } from 'react-toastify';
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -27,50 +31,60 @@ export default function SignUp() {
       label: 'Email address',
       type: 'email',
       required: true,
-      placeholder: '',
-      fullWidth: true
+      placeholder: 'your.email@example.com'
     },
     {
       name: 'phoneNumber',
       label: 'Phone Number',
       type: 'tel',
       required: true,
-      placeholder: '+1234567890',
-      fullWidth: true
+      placeholder: '+1234567890'
     },
     {
       name: 'companyName',
       label: 'Company Name',
       type: 'text',
       required: true,
-      placeholder: '',
-      fullWidth: true
+      placeholder: 'Your Company Inc.'
     },
     {
       name: 'companyWebsite',
       label: 'Company Website',
       type: 'text',
       required: true,
-      placeholder: 'https://example.com',
-      fullWidth: true
+      placeholder: 'https://example.com'
     },
     {
       name: 'password',
       label: 'Password',
       type: 'password',
       required: true,
-      placeholder: '',
-      fullWidth: true
+      placeholder: 'Enter a strong password'
     },
     {
       name: 'confirmPassword',
       label: 'Confirm Password',
       type: 'password',
       required: true,
-      placeholder: '',
-      fullWidth: true
+      placeholder: 'Re-enter your password'
     }
   ];
+  const firstLastNameFields = [
+    {
+      name: 'firstName',
+      label: 'First name',
+      type: 'text',
+      required: true, 
+      placeholder: 'John'
+    },
+    {
+      name: 'lastName',
+      label: 'Last name',
+      type: 'text',
+      required: true,
+      placeholder: 'Doe'
+    }
+  ] 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -96,7 +110,7 @@ export default function SignUp() {
       const signupData = {
         email: formData.email,
         password: formData.password,
-        fullName: fullName,
+        fullName,
         companyName: formData.companyName,
         phoneNumber: formData.phoneNumber,
         companyWebsite: formData.companyWebsite,
@@ -118,6 +132,42 @@ export default function SignUp() {
     }
   };
 
+  const handleGoogleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const { authUrl } = await authService.googleLogin();
+      
+      if (!authUrl) throw new Error('Auth URL not received');
+  
+      const width = 600, height = 600;
+      const left = (window.innerWidth - width) / 2;
+      const top = (window.innerHeight - height) / 2;
+  
+      const popup = window.open(
+        authUrl,
+        'GoogleLoginPopup',
+        `width=${width},height=${height},top=${top},left=${left},resizable=no`
+      );
+  
+      if (!popup) {
+        toast.error('Popup blocked! Allow popups in your browser.');
+        return;
+      }
+  
+      window.addEventListener('message', (event) => {
+        if (event.origin !== window.location.origin) return;
+  
+        if (event.data.token) {
+          localStorage.setItem('authToken', event.data.token);
+          navigate('/dashboard');
+        }
+      });
+      
+    } catch (error) {
+      toast.error('Error fetching Google auth URL:', error);
+    }
+  };
+
   useEffect(() => {
     const fetchCountries = async () => {
       try {
@@ -131,33 +181,16 @@ export default function SignUp() {
     fetchCountries();
   }, []);
 
-  const renderInput = (field) => (
-    <div key={field.name}>
-      <label htmlFor={field.name} className="block text-sm font-medium text-gray-700">
-        {field.label}
-      </label>
-      <div className="mt-1">
-        <input
-          type={field.type}
-          name={field.name}
-          id={field.name}
-          value={formData[field.name]}
-          onChange={handleChange}
-          placeholder={field.placeholder}
-          required={field.required}
-          className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
-        />
-      </div>
-    </div>
-  );
-
   return (
     <div className="w-[80%] mx-auto p-6">
       <div className="text-center mb-6">
         <h2 className="text-2xl font-bold text-gray-900">Create your account</h2>
         <p className="mt-2 text-sm text-gray-600">
           Already have an account?{' '}
-          <button onClick={() => navigate('/auth/signin')} className="font-medium text-[#0049ac] hover:text-[#0049ac]/90">
+          <button
+            onClick={() => navigate('/auth/signin')}
+            className="font-medium text-[#0049ac] hover:text-[#0049ac]/90"
+          >
             sign in
           </button>
         </p>
@@ -167,68 +200,54 @@ export default function SignUp() {
         {error && (
           <div className="text-red-500 text-sm">{error}</div>
         )}
-        
+ 
+ 
+        {/* First Name & Last Name */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
-              First name
-            </label>
-            <div className="mt-1">
-              <input
-                type="text"
-                name="firstName"
-                id="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                required
-                className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
-              Last name
-            </label>
-            <div className="mt-1">
-              <input
-                type="text"
-                name="lastName"
-                id="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                required
-                className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
-              />
-            </div>
-          </div>
-        </div>
-
-        {formFields.map(renderInput)}
-
-        <div>
-          <label htmlFor="residenceCountry" className="block text-sm font-medium text-gray-700">
-            Country of Residence
-          </label>
-          <div className="mt-1">
-            <select
-              name="residenceCountry"
-              id="residenceCountry"
-              value={formData.residenceCountry}
+          {firstLastNameFields.map(field => (
+            <InputField
+              key={field.name}
+              label={field.label}
+              name={field.name}
+              type={field.type}
+              placeholder={field.placeholder}
+              required={field.required}
+              value={formData[field.name]}
               onChange={handleChange}
-              required
-              className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
-            >
-              <option value="">Select a country</option>
-              {countries.map(country => (
-                <option key={country._id} value={country._id}>
-                  {country.name}
-                </option>
-              ))}
-            </select>
-          </div>
+            />
+          ))}
         </div>
 
+ {/* Country Select */}
+ <SelectField
+  label="Country of Residence"
+  name="residenceCountry"
+  value={formData.residenceCountry}
+  onChange={handleChange}
+  required
+  options={[
+    { value: '', label: 'Select a country' },
+    ...countries.map(country => ({ value: country._id, label: country.name }))
+  ]}
+/>
+
+        {/* Other Form Fields */}
+        {formFields.map(field => (
+          <InputField
+            key={field.name}
+            label={field.label}
+            name={field.name}
+            type={field.type}
+            placeholder={field.placeholder}
+            required={field.required}
+            value={formData[field.name]}
+            onChange={handleChange}
+          />
+        ))}
+
+      
+
+        {/* Submit Button */}
         <div>
           <button
             type="submit"
@@ -238,8 +257,10 @@ export default function SignUp() {
             {isLoading ? 'Signing up...' : 'Create account'}
           </button>
         </div>
-        <div className='w-full'>
-          <GoogleButton style={{ width: '100%', borderRadius: '0.375rem' }} />
+
+        {/* Google Button */}
+        <div className="w-full">
+          <GoogleButton onClick={handleGoogleLogin} label="Sign up with Google" />
         </div>
       </form>
     </div>

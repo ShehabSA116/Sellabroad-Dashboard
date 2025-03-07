@@ -1,8 +1,10 @@
 import React, { useState,useEffect } from 'react';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
-import GoogleButton from "react-google-button";
+import GoogleButton from '../../ui/GoogleButton';
 import authService from '../../Services/authService';
 import { toast } from 'react-toastify';
+import InputField from '../../ui/InputField';
+
 export default function SignIn() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -23,8 +25,12 @@ export default function SignIn() {
     setRememberMe(!rememberMe);
   };
 
-  const handleChange = ({ target: { name, value } }) => {
-    setFormData(prev => ({ ...prev, [name]: value }));
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
   
   const handleGoogleLogin = async (e) => {
@@ -74,6 +80,9 @@ export default function SignIn() {
         } 
         navigate('/dashboard');
       }
+      else{
+        toast.error('Invalid email or password');
+      }
     } catch (err) {
       const errorMessage = err.response?.data?.message || 'An error occurred during Sign In';
       toast.error(errorMessage);
@@ -81,45 +90,40 @@ export default function SignIn() {
       setIsLoading(false);
     }
   };
+  // Define form fields for InputField component
+  const formFields = [
+    {
+      name: 'email',
+      label: 'Email address',
+      type: 'email',
+      required: true,
+      placeholder: 'your.email@example.com'
+    },
+    {
+      name: 'password',
+      label: 'Password',
+      type: 'password',
+      required: true,
+      placeholder: 'Enter your password'
+    }
+  ];
 
   return (
     <div className="space-y-6">
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-            Email address
-          </label>
-          <div className="mt-1">
-            <input
-              id="email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              required
-              value={formData.email}
-              onChange={handleChange}
-              className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
-            />
-          </div>
-        </div>
-
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-            Password
-          </label>
-          <div className="mt-1">
-            <input
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              value={formData.password}
-              onChange={handleChange}
-              className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
-            />
-          </div>
-        </div>
+        {/* Replace the email and password inputs with InputField component */}
+        {formFields.map(field => (
+          <InputField
+            key={field.name}
+            label={field.label}
+            name={field.name}
+            type={field.type}
+            placeholder={field.placeholder}
+            required={field.required}
+            value={formData[field.name]}
+            onChange={handleChange}
+          />
+        ))}
 
         <div className="flex items-center justify-between">
           <div className="flex items-center">
@@ -135,11 +139,9 @@ export default function SignIn() {
               Remember me
             </label>
           </div>
+
           <div className="text-sm">
-            <Link
-              to="/auth/forgot-password"
-              className="font-medium text-[#0049ac] hover:text-[#0049ac]/90"
-            >
+            <Link to="/auth/forgot-password" className="font-medium text-[#0049ac] hover:text-[#0049ac]/90">
               Forgot your password?
             </Link>
           </div>
@@ -156,10 +158,29 @@ export default function SignIn() {
             {isLoading ? 'Signing in...' : 'Sign in'}
           </button>
         </div>
-        <div className='flex justify-center'>
-          <GoogleButton onClick={handleGoogleLogin}/>
-        </div>
       </form>
+
+      <div className="mt-6">
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-300" />
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="bg-white px-2 text-gray-500">Or continue with</span>
+          </div>
+        </div>
+
+        <div className="mt-6">
+          <GoogleButton onClick={handleGoogleLogin} label="Sign in with Google" />
+        </div>
+      </div>
+
+      <p className="mt-6 text-center text-sm text-gray-500">
+        Not a member?{' '}
+        <Link to="/auth/signup" className="font-medium text-[#0049ac] hover:text-[#0049ac]/90">
+          Sign up now
+        </Link>
+      </p>
     </div>
   );
 } 

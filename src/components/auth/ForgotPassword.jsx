@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import authService from '../../Services/authService';
 import { toast } from 'react-toastify';
+import InputField from '../../ui/InputField';
 export default function ForgotPassword() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -32,25 +33,16 @@ export default function ForgotPassword() {
     >
       <form onSubmit={handleSubmit} className="space-y-8 py-6">
       
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-            Email address
-          </label>
-          <div className="mt-1">
-            <input
-              value={email}
-              onChange={handleChange}
-              disabled={isLoading}
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Enter your email address"
-              autoComplete="email"
-              required
-              className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
-            />
-          </div>
-        </div>
+        <InputField
+          label="Email address"
+          name="email"
+          type="email"
+          placeholder="Enter your email address"
+          required={true}
+          value={email}
+          onChange={handleChange}
+          disabled={isLoading}
+        />
 
         <div>
           <button
