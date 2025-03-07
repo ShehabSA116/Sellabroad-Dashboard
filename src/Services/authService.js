@@ -21,9 +21,6 @@ const authService = {
 
   login: async (userData) => {
     const response = await api.post('/auth/signin', userData);
-    if (response.data.token) {
-      localStorage.setItem('token', response.data.token);
-    }
     return response.data;
   },
 
