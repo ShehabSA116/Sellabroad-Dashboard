@@ -1,8 +1,12 @@
 import { useState } from 'react';
 import WorldMap from './WorldMap';
 import { toast } from 'react-hot-toast';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 
-function NewMarkets({ onNext, onPrevious }) {
+function NewMarkets() {
+  const navigate = useNavigate();
+  const { stepInfo, currentStepIndex } = useOutletContext() || { stepInfo: [], currentStepIndex: 0 };
+  
   const [selectedMarkets, setSelectedMarkets] = useState([]);
   const [existingMarkets, setExistingMarkets] = useState([]);
   const [isSelectingCurrent, setIsSelectingCurrent] = useState(true);
@@ -45,7 +49,11 @@ function NewMarkets({ onNext, onPrevious }) {
       localStorage.setItem('from', existingMarkets);
       localStorage.setItem('to', selectedMarkets);
       toast.success('Markets saved successfully');
-      onNext();
+      
+      // Navigate to the next step using the stepInfo from context
+      if (currentStepIndex < stepInfo.length - 1) {
+        navigate(stepInfo[currentStepIndex + 1].path);
+      }
     } catch (error) {
       console.error('Failed to save markets:', error);
       toast.error(error.response?.data?.error || 'Failed to save markets');

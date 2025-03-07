@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 
-
-function DemandForecast({ onNext, onPrevious, isFirstStep, isLastStep }) {
+function DemandForecast() {
   const navigate = useNavigate();
+  const { stepInfo, currentStepIndex } = useOutletContext() || { stepInfo: [], currentStepIndex: 0 };
+  
   const [loading, setLoading] = useState(false);
   const [connectedStore, setConnectedStore] = useState('');
   const [shopifyStore, setShopifyStore] = useState('');
@@ -44,6 +45,12 @@ function DemandForecast({ onNext, onPrevious, isFirstStep, isLastStep }) {
 
   const handleContinue = () => {
     navigate('/dashboard');
+  };
+
+  const handlePrevious = () => {
+    if (currentStepIndex > 0) {
+      navigate(stepInfo[currentStepIndex - 1].path);
+    }
   };
 
   const handleShopifyConnect = (e) => {
@@ -213,7 +220,7 @@ function DemandForecast({ onNext, onPrevious, isFirstStep, isLastStep }) {
           {/* Navigation Buttons */}
           <div className="flex justify-between mt-8">
             <button
-              onClick={onPrevious}
+              onClick={handlePrevious}
               className="px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 font-medium"
             >
               Back to Markets

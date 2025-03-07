@@ -119,10 +119,7 @@ export default function SignUp() {
         companyWebsite: formData.companyWebsite,
         residenceCountry: formData.residenceCountry
       };
-      
-      console.log('Signup data being sent:', signupData);
-      const response = await authService.signup(signupData);
-
+            const response = await authService.signup(signupData);
       if (response.token) {
         navigate('/onboarding');
       } else {
@@ -135,7 +132,6 @@ export default function SignUp() {
       setIsLoading(false);
     }
   };
-
   const handleGoogleLogin = async (e) => {
     e.preventDefault();
     handleGoogleAuth(navigate, '/onboarding');
