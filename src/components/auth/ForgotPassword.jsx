@@ -31,9 +31,7 @@ export default function ForgotPassword() {
       subtitle="Enter your email address and we'll send you an OTP code to reset your password."
     >
       <form onSubmit={handleSubmit} className="space-y-8 py-6">
-        {error && (
-          <div className="text-red-500 text-sm text-center">{error}</div>
-        )}
+      
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700">
             Email address
