@@ -5,6 +5,7 @@ import NewMarkets from './NewMarkets';
 import DemandForecast from './DemandForecast';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import BaseLayout from '../auth/BaseLayout';
 function OnboardingLayout() {
   const stepInfo = [
     { id: 'markets', title: 'Markets', description: 'Select your current and target markets' },
@@ -70,7 +71,7 @@ function OnboardingLayout() {
       <div className="flex">
         {/* Sidebar - Hide on mobile */}
         <div className="hidden md:block md:fixed md:left-0 md:w-[400px]">
-          <SidePanel 
+          <BaseLayout 
             title="Ready to expand?"
             subtitle="Answer these questions to easily expand your market to the Middle East!"
           />

@@ -1,7 +1,6 @@
 // SignUp.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {  useNavigate } from 'react-router-dom';
 import GoogleButton from '../../ui/GoogleButton';
 import authService from '../../Services/authService';
 import countryService from '../../Services/countryService';
