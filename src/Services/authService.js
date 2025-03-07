@@ -50,9 +50,7 @@ const authService = {
 
   logout: () => {
     const token = localStorage.getItem('token');
-    if (token) {
-      localStorage.removeItem('token');
-    }
+    return token ? localStorage.removeItem('token') : null;
   },
 
   getCurrentUser: () => {

@@ -1,8 +1,10 @@
-import { Steps } from 'antd';
+import React from 'react';
 import SidePanel from '../icons/SidePanel';
+import { Steps } from 'antd';
 import NewMarkets from './NewMarkets';
 import DemandForecast from './DemandForecast';
-
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 function OnboardingLayout() {
   const stepInfo = [
     { id: 'markets', title: 'Markets', description: 'Select your current and target markets' },
@@ -14,7 +16,57 @@ function OnboardingLayout() {
     forecast: DemandForecast
   };
 
-  const CurrentStepComponent = stepComponents['markets'] || (() => <p>Step not found</p>);
+  // Track current and preview steps
+  const [currentStep, setCurrentStep] = useState('markets');
+  const [previewStep, setPreviewStep] = useState(null);
+
+  // Handle step transitions
+  const handleNext = () => {
+    const currentIndex = stepInfo.findIndex(step => step.id === currentStep);
+    const nextStep = stepInfo[currentIndex + 1]?.id;
+    
+    if (currentStep === 'forecast') {
+      // TODO: Add navigation logic to dashboard page
+      return;
+    }
+    
+    if (nextStep) {
+      setPreviewStep(nextStep);
+    }
+  };
+
+  const handlePrevious = () => {
+    const currentIndex = stepInfo.findIndex(step => step.id === currentStep);
+    setCurrentStep(stepInfo[currentIndex - 1].id);
+    setPreviewStep(null);
+  };
+
+  // Determine which components to render
+  const renderStepComponents = () => {
+    const components = [
+      <div key={currentStep} className="animate-slide-left">
+        {React.createElement(stepComponents[currentStep], {
+          onNext: handleNext,
+          onPrevious: handlePrevious,
+          isFirstStep: currentStep === 'markets',
+          isLastStep: currentStep === 'forecast'
+        })}
+      </div>
+    ];
+
+    if (previewStep) {
+      components.push(
+        <div key={previewStep} className="mt-8 opacity-50">
+          <h2 className="text-xl font-semibold mb-4">Preview of next step:</h2>
+          {React.createElement(stepComponents[previewStep], {
+            isPreview: true
+          })}
+        </div>
+      );
+    }
+
+    return components;
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -25,8 +77,10 @@ function OnboardingLayout() {
             title="Ready to expand?"
             subtitle="Answer these questions to easily expand your market to the Middle East!"
             steps={stepInfo}
-            currentStep="markets"
-            completedSteps={[]}
+            currentStep={currentStep}
+            completedSteps={stepInfo
+              .slice(0, stepInfo.findIndex(step => step.id === currentStep))
+              .map(step => step.id)}
           />
         </div>
 
@@ -36,25 +90,15 @@ function OnboardingLayout() {
           <header className="sticky top-4 w-full flex justify-center z-30">
             <div className="bg-white rounded-xl shadow-lg px-8 py-4">
               <Steps
-                current={0}
-                items={[
-                  { title: 'Markets' },
-                  { title: 'Forecast' }
-                ]}
+                current={stepInfo.findIndex(step => step.id === currentStep)}
+                items={stepInfo.map(step => ({ title: step.title }))}
               />
             </div>
           </header>
 
           {/* Content Section */}
           <main className="max-w-7xl mx-auto p-8 mt-12">
-            <div className="animate-slide-left">
-              <CurrentStepComponent 
-                onNext={() => {}}
-                onPrevious={() => {}}
-                isFirstStep={true}
-                isLastStep={false}
-              />
-            </div>
+            {renderStepComponents()}
           </main>
         </div>
       </div>
