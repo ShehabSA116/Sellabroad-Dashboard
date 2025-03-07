@@ -65,7 +65,6 @@ export default function SignIn() {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    e.stopPropagation();
     setIsLoading(true);
     try {
       const response = await authService.login(formData);
