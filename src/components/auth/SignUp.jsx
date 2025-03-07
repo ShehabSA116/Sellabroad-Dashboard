@@ -1,8 +1,9 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import GoogleButton from "react-google-button";
 import authService from '../../Services/authService';
 import countryService from '../../Services/countryService';
+
 export default function SignUp() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -19,6 +20,58 @@ export default function SignUp() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [countries, setCountries] = useState([]);
+
+  const formFields = [
+    {
+      name: 'email',
+      label: 'Email address',
+      type: 'email',
+      required: true,
+      placeholder: '',
+      fullWidth: true
+    },
+    {
+      name: 'phoneNumber',
+      label: 'Phone Number',
+      type: 'tel',
+      required: true,
+      placeholder: '+1234567890',
+      fullWidth: true
+    },
+    {
+      name: 'companyName',
+      label: 'Company Name',
+      type: 'text',
+      required: true,
+      placeholder: '',
+      fullWidth: true
+    },
+    {
+      name: 'companyWebsite',
+      label: 'Company Website',
+      type: 'text',
+      required: true,
+      placeholder: 'https://example.com',
+      fullWidth: true
+    },
+    {
+      name: 'password',
+      label: 'Password',
+      type: 'password',
+      required: true,
+      placeholder: '',
+      fullWidth: true
+    },
+    {
+      name: 'confirmPassword',
+      label: 'Confirm Password',
+      type: 'password',
+      required: true,
+      placeholder: '',
+      fullWidth: true
+    }
+  ];
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -32,7 +85,6 @@ export default function SignUp() {
     setError('');
     setIsLoading(true);
 
-    // Basic validation
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
       setIsLoading(false);
@@ -40,9 +92,7 @@ export default function SignUp() {
     }
 
     try {
-      // Create the fullName by concatenating firstName and lastName
       const fullName = `${formData.firstName} ${formData.lastName}`.trim();
-
       const response = await authService.signup({
         email: formData.email,
         password: formData.password,
@@ -53,11 +103,9 @@ export default function SignUp() {
         residenceCountry: formData.residenceCountry
       });
 
-      // If signup is successful and returns a token, navigate to dashboard
       if (response.token) {
         navigate('/dashboard');
       } else {
-        // If signup requires email verification, navigate to OTP verification
         navigate('/auth/verify-otp');
       }
     } catch (err) {
@@ -67,11 +115,11 @@ export default function SignUp() {
     }
   };
 
-
   useEffect(() => {
     const fetchCountries = async () => {
       try {
         const response = await countryService.getCountries();
+        console.log('Countries response:', JSON.stringify(response, null, 2));
         setCountries(response);
       } catch (error) { 
         console.error('Error fetching countries:', error);
@@ -80,6 +128,25 @@ export default function SignUp() {
     fetchCountries();
   }, []);
 
+  const renderInput = (field) => (
+    <div key={field.name}>
+      <label htmlFor={field.name} className="block text-sm font-medium text-gray-700">
+        {field.label}
+      </label>
+      <div className="mt-1">
+        <input
+          type={field.type}
+          name={field.name}
+          id={field.name}
+          value={formData[field.name]}
+          onChange={handleChange}
+          placeholder={field.placeholder}
+          required={field.required}
+          className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
+        />
+      </div>
+    </div>
+  );
 
   return (
     <div className="w-[80%] mx-auto p-6">
@@ -134,74 +201,7 @@ export default function SignUp() {
           </div>
         </div>
 
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-            Email address
-          </label>
-          <div className="mt-1">
-            <input
-              type="email"
-              name="email"
-              id="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
-            />
-          </div>
-        </div>
-
-        <div>
-          <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
-            Phone Number
-          </label>
-          <div className="mt-1">
-            <input
-              type="tel"
-              name="phoneNumber"
-              id="phoneNumber"
-              value={formData.phoneNumber}
-              onChange={handleChange}
-              placeholder="+1234567890"
-              required
-              className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
-            />
-          </div>
-        </div>
-
-        <div>
-          <label htmlFor="companyName" className="block text-sm font-medium text-gray-700">
-            Company Name
-          </label>
-          <div className="mt-1">
-            <input
-              type="text"
-              name="companyName"
-              id="companyName"
-              value={formData.companyName}
-              onChange={handleChange}
-              required
-              className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
-            />
-          </div>
-        </div>
-
-        <div>
-          <label htmlFor="companyWebsite" className="block text-sm font-medium text-gray-700">
-            Company Website
-          </label>
-          <div className="mt-1">
-            <input
-              name="companyWebsite"
-              id="companyWebsite"
-              value={formData.companyWebsite}
-              onChange={handleChange}
-              placeholder="https://example.com"
-              required
-              className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
-            />
-          </div>
-        </div>
+        {formFields.map(renderInput)}
 
         <div>
           <label htmlFor="residenceCountry" className="block text-sm font-medium text-gray-700">
@@ -218,45 +218,11 @@ export default function SignUp() {
             >
               <option value="">Select a country</option>
               {countries.map(country => (
-                <option key={country.id} value={country.id}>
+                <option key={country._id} value={country.id}>
                   {country.name}
                 </option>
               ))}
             </select>
-          </div>
-        </div>
-
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-            Password
-          </label>
-          <div className="mt-1">
-            <input
-              type="password"
-              name="password"
-              id="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
-            />
-          </div>
-        </div>
-
-        <div>
-          <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
-            Confirm Password
-          </label>
-          <div className="mt-1">
-            <input
-              type="password"
-              name="confirmPassword"
-              id="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              required
-              className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
-            />
           </div>
         </div>
 
