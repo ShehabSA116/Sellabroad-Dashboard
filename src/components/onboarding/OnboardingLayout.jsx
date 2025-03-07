@@ -25,13 +25,10 @@ function OnboardingLayout() {
     const currentIndex = stepInfo.findIndex(step => step.id === currentStep);
     const nextStep = stepInfo[currentIndex + 1]?.id;
     
-    if (currentStep === 'forecast') {
-      // TODO: Add navigation logic to dashboard page
-      return;
-    }
     
     if (nextStep) {
-      setPreviewStep(nextStep);
+      setCurrentStep(nextStep);
+      setPreviewStep(null);
     }
   };
 
@@ -76,11 +73,6 @@ function OnboardingLayout() {
           <SidePanel 
             title="Ready to expand?"
             subtitle="Answer these questions to easily expand your market to the Middle East!"
-            steps={stepInfo}
-            currentStep={currentStep}
-            completedSteps={stepInfo
-              .slice(0, stepInfo.findIndex(step => step.id === currentStep))
-              .map(step => step.id)}
           />
         </div>
 

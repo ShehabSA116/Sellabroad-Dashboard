@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import WorldMap from './WorldMap';
 import { toast } from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
 
 function NewMarkets({ onNext, onPrevious }) {
   const [selectedMarkets, setSelectedMarkets] = useState([]);
   const [existingMarkets, setExistingMarkets] = useState([]);
   const [isSelectingCurrent, setIsSelectingCurrent] = useState(true);
-  const navigate = useNavigate();
   const handleMarketToggle = (marketName) => {
     if (isSelectingCurrent) {
       setExistingMarkets(prev => 
