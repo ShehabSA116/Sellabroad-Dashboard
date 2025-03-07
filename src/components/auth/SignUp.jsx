@@ -1,10 +1,12 @@
 // SignUp.jsx
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import GoogleButton from "react-google-button";
+import GoogleButton from '../../ui/GoogleButton';
 import authService from '../../Services/authService';
 import countryService from '../../Services/countryService';
 import InputField from '../../ui/InputField'; // Adjust the path as needed
+import SelectField from '../../ui/SelectField';
+import { toast } from 'react-toastify';
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -29,7 +31,7 @@ export default function SignUp() {
       label: 'Email address',
       type: 'email',
       required: true,
-      placeholder: ''
+      placeholder: 'your.email@example.com'
     },
     {
       name: 'phoneNumber',
@@ -43,7 +45,7 @@ export default function SignUp() {
       label: 'Company Name',
       type: 'text',
       required: true,
-      placeholder: ''
+      placeholder: 'Your Company Inc.'
     },
     {
       name: 'companyWebsite',
@@ -57,14 +59,14 @@ export default function SignUp() {
       label: 'Password',
       type: 'password',
       required: true,
-      placeholder: ''
+      placeholder: 'Enter a strong password'
     },
     {
       name: 'confirmPassword',
       label: 'Confirm Password',
       type: 'password',
       required: true,
-      placeholder: ''
+      placeholder: 'Re-enter your password'
     }
   ];
   const firstLastNameFields = [
@@ -73,14 +75,14 @@ export default function SignUp() {
       label: 'First name',
       type: 'text',
       required: true, 
-      placeholder: ''
+      placeholder: 'John'
     },
     {
       name: 'lastName',
       label: 'Last name',
       type: 'text',
       required: true,
-      placeholder: ''
+      placeholder: 'Doe'
     }
   ] 
 
@@ -127,6 +129,42 @@ export default function SignUp() {
       setError(err.response?.data?.message || 'An error occurred during signup');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const { authUrl } = await authService.googleLogin();
+      
+      if (!authUrl) throw new Error('Auth URL not received');
+  
+      const width = 600, height = 600;
+      const left = (window.innerWidth - width) / 2;
+      const top = (window.innerHeight - height) / 2;
+  
+      const popup = window.open(
+        authUrl,
+        'GoogleLoginPopup',
+        `width=${width},height=${height},top=${top},left=${left},resizable=no`
+      );
+  
+      if (!popup) {
+        toast.error('Popup blocked! Allow popups in your browser.');
+        return;
+      }
+  
+      window.addEventListener('message', (event) => {
+        if (event.origin !== window.location.origin) return;
+  
+        if (event.data.token) {
+          localStorage.setItem('authToken', event.data.token);
+          navigate('/dashboard');
+        }
+      });
+      
+    } catch (error) {
+      toast.error('Error fetching Google auth URL:', error);
     }
   };
 
@@ -181,29 +219,17 @@ export default function SignUp() {
         </div>
 
  {/* Country Select */}
- <div>
-          <label htmlFor="residenceCountry" className="block text-sm font-medium text-gray-700">
-            Country of Residence
-          </label>
-          <div className="mt-1">
-            <select
-              name="residenceCountry"
-              id="residenceCountry"
-              value={formData.residenceCountry}
-              onChange={handleChange}
-              required
-              className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
-            >
-              <option value="">Select a country</option>
-              {countries.map(country => (
-                <option key={country._id} value={country._id}>
-                  {country.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
+ <SelectField
+  label="Country of Residence"
+  name="residenceCountry"
+  value={formData.residenceCountry}
+  onChange={handleChange}
+  required
+  options={[
+    { value: '', label: 'Select a country' },
+    ...countries.map(country => ({ value: country._id, label: country.name }))
+  ]}
+/>
 
         {/* Other Form Fields */}
         {formFields.map(field => (
@@ -234,7 +260,7 @@ export default function SignUp() {
 
         {/* Google Button */}
         <div className="w-full">
-          <GoogleButton style={{ width: '100%', borderRadius: '0.375rem' }} />
+          <GoogleButton onClick={handleGoogleLogin} label="Sign up with Google" />
         </div>
       </form>
     </div>

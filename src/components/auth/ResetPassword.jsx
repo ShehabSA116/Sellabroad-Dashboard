@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import authService from '../../Services/authService';
 import { toast } from 'react-toastify';
+import InputField from '../../ui/InputField';
 
 export default function ResetPassword() {
   const navigate = useNavigate();
@@ -29,6 +30,11 @@ export default function ResetPassword() {
       setIsLoading(false);
       return;
     }
+    if (formData.password.length < 8) {
+      toast.error('Password must be at least 8 characters long');
+      setIsLoading(false);
+      return;
+    }
 
     try {
       // Get the token that was stored after OTP verification
@@ -45,7 +51,7 @@ export default function ResetPassword() {
       localStorage.removeItem('resetToken');
       localStorage.removeItem('resetEmail');
       
-      alert('Password reset successfully');
+      toast.success('Password reset successfully');
       // Navigate to login page
       navigate('/auth/signin');
     } catch (err) {
@@ -61,39 +67,25 @@ export default function ResetPassword() {
       subtitle="Please enter your new password below."
     >
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-            New password
-          </label>
-          <div className="mt-1">
-            <input
-              id="password"
-              name="password"
-              type="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
-            />
-          </div>
-        </div>
+        <InputField
+          label="New password"
+          name="password"
+          type="password"
+          value={formData.password}
+          onChange={handleChange}
+          required={true}
+          placeholder="Enter your new password"
+        />
 
-        <div>
-          <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
-            Confirm new password
-          </label>
-          <div className="mt-1">
-            <input
-              id="confirmPassword"
-              name="confirmPassword"
-              type="password"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              required
-              className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
-            />
-          </div>
-        </div>
+        <InputField
+          label="Confirm new password"
+          name="confirmPassword"
+          type="password"
+          value={formData.confirmPassword}
+          onChange={handleChange}
+          required={true}
+          placeholder="Confirm your new password"
+        />
 
         <div>
           <button

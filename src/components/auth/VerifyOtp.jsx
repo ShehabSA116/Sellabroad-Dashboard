@@ -14,6 +14,7 @@ const handleResendOtp = async () => {
     try {
       setIsLoading(true);
       await authService.forgotPassword(email);
+      toast.success('Check your email for the OTP code');
     } catch (err) {
       toast.error('Failed to resend OTP');
     } finally {
@@ -43,6 +44,8 @@ const handleResendOtp = async () => {
         localStorage.setItem('resetToken', response.token);
         // Navigate to reset password page
         navigate('/auth/reset-password');
+        toast.success('OTP verified successfully');
+        localStorage.removeItem('resetEmail');
       } else {
         toast.error('No reset token received from server');
       }
@@ -73,14 +76,13 @@ toast.error(err.response?.data?.message || 'Invalid OTP code');
         {isLoading ? 'Verifying...' : 'Verify OTP'}
       </button>
 
-      {/* Optional: Add a resend OTP button */}
       <button
-        type="submit"
-       
+        type="button"
+        onClick={handleResendOtp}
         disabled={isLoading}
-        className="text-sm text-[#0049ac] hover:text-[#0049ac]/90"
+        className="text-sm text-[#0049ac] hover:text-[#0049ac]/90 hover:underline  cursor-pointer" 
       >
-        Resend OTP
+        Resend OTP  
       </button>
     </form>
   );
