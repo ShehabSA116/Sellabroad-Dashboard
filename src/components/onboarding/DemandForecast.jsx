@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 
+
 function DemandForecast({ onNext, onPrevious, isFirstStep, isLastStep }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -42,7 +43,7 @@ function DemandForecast({ onNext, onPrevious, isFirstStep, isLastStep }) {
   ]);
 
   const handleContinue = () => {
-    navigate('/strategy/dashboard');
+    navigate('/dashboard');
   };
 
   const handleShopifyConnect = (e) => {

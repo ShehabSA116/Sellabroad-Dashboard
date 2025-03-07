@@ -12,6 +12,7 @@ import ResetPassword from './components/auth/ResetPassword';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import AuthCallback from './components/auth/authCallback';
+import Onboarding from './pages/Onboarding';
 import { ToastContainer } from 'react-toastify';
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="forecast" element={<DemandForecast />} />
           <Route path="documents" element={<UploadDocuments />} /> 
         </Route>
+        <Route path="/onboarding" element={<Onboarding />} />
       </Routes>
     </Router>
   );
