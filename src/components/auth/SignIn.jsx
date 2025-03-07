@@ -15,9 +15,9 @@ export default function SignIn() {
   useEffect(() => {
     const savedToken = localStorage.getItem('token');
     if (savedToken) {
-      navigate('/dashboard'); // Auto-login if token exists
+      navigate('/dashboard'); 
     }
-  }, [navigate]);
+  }, []);
 
   const handleRememberMe = () => {
     setRememberMe(!rememberMe);
@@ -65,14 +65,19 @@ export default function SignIn() {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
+    e.stopPropagation();
     setIsLoading(true);
     try {
       const response = await authService.login(formData);
       if (response.token) {
+        if (rememberMe) {
+          localStorage.setItem('token', response.token);
+        } 
         navigate('/dashboard');
       }
     } catch (err) {
-      toast.error(err.response?.data?.message || 'An error occurred during Sign In');
+      const errorMessage = err.response?.data?.message || 'An error occurred during Sign In';
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -118,6 +123,19 @@ export default function SignIn() {
         </div>
 
         <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <input
+              id="remember-me"
+              name="remember-me"
+              type="checkbox"
+              checked={rememberMe}
+              onChange={handleRememberMe}
+              className="h-4 w-4 rounded border-gray-300 text-[#0049ac] focus:ring-[#0049ac]"
+            />
+            <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+              Remember me
+            </label>
+          </div>
           <div className="text-sm">
             <Link
               to="/auth/forgot-password"
