@@ -1,8 +1,10 @@
+// SignUp.jsx
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import GoogleButton from "react-google-button";
 import authService from '../../Services/authService';
 import countryService from '../../Services/countryService';
+import InputField from '../../ui/InputField'; // Adjust the path as needed
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -27,50 +29,60 @@ export default function SignUp() {
       label: 'Email address',
       type: 'email',
       required: true,
-      placeholder: '',
-      fullWidth: true
+      placeholder: ''
     },
     {
       name: 'phoneNumber',
       label: 'Phone Number',
       type: 'tel',
       required: true,
-      placeholder: '+1234567890',
-      fullWidth: true
+      placeholder: '+1234567890'
     },
     {
       name: 'companyName',
       label: 'Company Name',
       type: 'text',
       required: true,
-      placeholder: '',
-      fullWidth: true
+      placeholder: ''
     },
     {
       name: 'companyWebsite',
       label: 'Company Website',
       type: 'text',
       required: true,
-      placeholder: 'https://example.com',
-      fullWidth: true
+      placeholder: 'https://example.com'
     },
     {
       name: 'password',
       label: 'Password',
       type: 'password',
       required: true,
-      placeholder: '',
-      fullWidth: true
+      placeholder: ''
     },
     {
       name: 'confirmPassword',
       label: 'Confirm Password',
       type: 'password',
       required: true,
-      placeholder: '',
-      fullWidth: true
+      placeholder: ''
     }
   ];
+  const firstLastNameFields = [
+    {
+      name: 'firstName',
+      label: 'First name',
+      type: 'text',
+      required: true, 
+      placeholder: ''
+    },
+    {
+      name: 'lastName',
+      label: 'Last name',
+      type: 'text',
+      required: true,
+      placeholder: ''
+    }
+  ] 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -96,7 +108,7 @@ export default function SignUp() {
       const signupData = {
         email: formData.email,
         password: formData.password,
-        fullName: fullName,
+        fullName,
         companyName: formData.companyName,
         phoneNumber: formData.phoneNumber,
         companyWebsite: formData.companyWebsite,
@@ -131,33 +143,16 @@ export default function SignUp() {
     fetchCountries();
   }, []);
 
-  const renderInput = (field) => (
-    <div key={field.name}>
-      <label htmlFor={field.name} className="block text-sm font-medium text-gray-700">
-        {field.label}
-      </label>
-      <div className="mt-1">
-        <input
-          type={field.type}
-          name={field.name}
-          id={field.name}
-          value={formData[field.name]}
-          onChange={handleChange}
-          placeholder={field.placeholder}
-          required={field.required}
-          className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
-        />
-      </div>
-    </div>
-  );
-
   return (
     <div className="w-[80%] mx-auto p-6">
       <div className="text-center mb-6">
         <h2 className="text-2xl font-bold text-gray-900">Create your account</h2>
         <p className="mt-2 text-sm text-gray-600">
           Already have an account?{' '}
-          <button onClick={() => navigate('/auth/signin')} className="font-medium text-[#0049ac] hover:text-[#0049ac]/90">
+          <button
+            onClick={() => navigate('/auth/signin')}
+            className="font-medium text-[#0049ac] hover:text-[#0049ac]/90"
+          >
             sign in
           </button>
         </p>
@@ -167,46 +162,26 @@ export default function SignUp() {
         {error && (
           <div className="text-red-500 text-sm">{error}</div>
         )}
-        
+ 
+ 
+        {/* First Name & Last Name */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
-              First name
-            </label>
-            <div className="mt-1">
-              <input
-                type="text"
-                name="firstName"
-                id="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                required
-                className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
-              Last name
-            </label>
-            <div className="mt-1">
-              <input
-                type="text"
-                name="lastName"
-                id="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                required
-                className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-[#0049ac] focus:outline-none focus:ring-[#0049ac] sm:text-sm"
-              />
-            </div>
-          </div>
+          {firstLastNameFields.map(field => (
+            <InputField
+              key={field.name}
+              label={field.label}
+              name={field.name}
+              type={field.type}
+              placeholder={field.placeholder}
+              required={field.required}
+              value={formData[field.name]}
+              onChange={handleChange}
+            />
+          ))}
         </div>
 
-        {formFields.map(renderInput)}
-
-        <div>
+ {/* Country Select */}
+ <div>
           <label htmlFor="residenceCountry" className="block text-sm font-medium text-gray-700">
             Country of Residence
           </label>
@@ -229,6 +204,24 @@ export default function SignUp() {
           </div>
         </div>
 
+
+        {/* Other Form Fields */}
+        {formFields.map(field => (
+          <InputField
+            key={field.name}
+            label={field.label}
+            name={field.name}
+            type={field.type}
+            placeholder={field.placeholder}
+            required={field.required}
+            value={formData[field.name]}
+            onChange={handleChange}
+          />
+        ))}
+
+      
+
+        {/* Submit Button */}
         <div>
           <button
             type="submit"
@@ -238,7 +231,9 @@ export default function SignUp() {
             {isLoading ? 'Signing up...' : 'Create account'}
           </button>
         </div>
-        <div className='w-full'>
+
+        {/* Google Button */}
+        <div className="w-full">
           <GoogleButton style={{ width: '100%', borderRadius: '0.375rem' }} />
         </div>
       </form>
