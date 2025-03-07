@@ -1,6 +1,6 @@
 // SignUp.jsx
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import GoogleButton from '../../ui/GoogleButton';
 import authService from '../../Services/authService';
 import countryService from '../../Services/countryService';
@@ -21,7 +21,6 @@ export default function SignUp() {
     companyWebsite: '',
     residenceCountry: ''
   });
-  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [countries, setCountries] = useState([]);
 
@@ -96,10 +95,15 @@ export default function SignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+     
     setIsLoading(true);
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      toast.error('Passwords do not match');
+      setIsLoading(false);
+      return;
+    }
+    if (formData.password.length < 8) {
+      toast.error('Password must be at least 8 characters long');
       setIsLoading(false);
       return;
     }
@@ -124,8 +128,9 @@ export default function SignUp() {
       } else {
         navigate('/auth/verify-otp');
       }
+      toast.success('You have successfully created an account');
     } catch (err) {
-      setError(err.response?.data?.message || 'An error occurred during signup');
+      toast.error(err.response?.data?.message || 'An error occurred during signup');
     } finally {
       setIsLoading(false);
     }
@@ -159,8 +164,8 @@ export default function SignUp() {
         }
       });
       
-    } catch (error) {
-      toast.error('Error fetching Google auth URL:', error);
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'An error occurred during signup');
     }
   };
 
@@ -169,8 +174,8 @@ export default function SignUp() {
       try {
         const response = await countryService.getCountries();
         setCountries(response);
-      } catch (error) { 
-        console.error('Error fetching countries:', error);
+      } catch (err) {
+        toast.error(err.response?.data?.message || 'An error occurred during signup');
       }
     };
     fetchCountries();
@@ -191,9 +196,7 @@ export default function SignUp() {
         </p>
       </div>
       <form onSubmit={handleSubmit} className="space-y-6">
-        {error && (
-          <div className="text-red-500 text-sm">{error}</div>
-        )}
+      
         {/* First Name & Last Name */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {firstLastNameFields.map(field => (
