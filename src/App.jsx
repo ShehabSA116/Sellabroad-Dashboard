@@ -13,7 +13,6 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import AuthCallback from './components/auth/authCallback';
 import Onboarding from './pages/Onboarding';
-import ForecastPage from './pages/Forecast';
 import { ToastContainer } from 'react-toastify';
 function App() {
   return (
