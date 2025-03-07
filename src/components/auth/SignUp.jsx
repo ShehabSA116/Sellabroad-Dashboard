@@ -98,7 +98,6 @@ export default function SignUp() {
     e.preventDefault();
     setError('');
     setIsLoading(true);
-
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
       setIsLoading(false);
@@ -135,14 +134,11 @@ export default function SignUp() {
   const handleGoogleLogin = async (e) => {
     e.preventDefault();
     try {
-      const { authUrl } = await authService.googleLogin();
-      
+      const { authUrl } = await authService.googleLogin();  
       if (!authUrl) throw new Error('Auth URL not received');
-  
       const width = 600, height = 600;
       const left = (window.innerWidth - width) / 2;
       const top = (window.innerHeight - height) / 2;
-  
       const popup = window.open(
         authUrl,
         'GoogleLoginPopup',
@@ -172,7 +168,6 @@ export default function SignUp() {
     const fetchCountries = async () => {
       try {
         const response = await countryService.getCountries();
-        console.log('Countries response:', JSON.stringify(response, null, 2));
         setCountries(response);
       } catch (error) { 
         console.error('Error fetching countries:', error);
@@ -195,13 +190,10 @@ export default function SignUp() {
           </button>
         </p>
       </div>
-
       <form onSubmit={handleSubmit} className="space-y-6">
         {error && (
           <div className="text-red-500 text-sm">{error}</div>
         )}
- 
- 
         {/* First Name & Last Name */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {firstLastNameFields.map(field => (
@@ -217,7 +209,6 @@ export default function SignUp() {
             />
           ))}
         </div>
-
  {/* Country Select */}
  <SelectField
   label="Country of Residence"
@@ -230,7 +221,6 @@ export default function SignUp() {
     ...countries.map(country => ({ value: country._id, label: country.name }))
   ]}
 />
-
         {/* Other Form Fields */}
         {formFields.map(field => (
           <InputField
@@ -244,8 +234,6 @@ export default function SignUp() {
             onChange={handleChange}
           />
         ))}
-
-      
 
         {/* Submit Button */}
         <div>
