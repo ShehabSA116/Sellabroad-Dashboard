@@ -1,14 +1,13 @@
 // SignUp.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {  useNavigate } from 'react-router-dom';
 import GoogleButton from '../../ui/GoogleButton';
 import authService from '../../Services/authService';
 import countryService from '../../Services/countryService';
 import InputField from '../../ui/InputField'; // Adjust the path as needed
 import SelectField from '../../ui/SelectField';
 import { toast } from 'react-toastify';
-
+import { handleGoogleAuth } from '../utils/handleGoogleAuth';
 export default function SignUp() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -139,35 +138,7 @@ export default function SignUp() {
 
   const handleGoogleLogin = async (e) => {
     e.preventDefault();
-    try {
-      const { authUrl } = await authService.googleLogin();  
-      if (!authUrl) throw new Error('Auth URL not received');
-      const width = 600, height = 600;
-      const left = (window.innerWidth - width) / 2;
-      const top = (window.innerHeight - height) / 2;
-      const popup = window.open(
-        authUrl,
-        'GoogleLoginPopup',
-        `width=${width},height=${height},top=${top},left=${left},resizable=no`
-      );
-  
-      if (!popup) {
-        toast.error('Popup blocked! Allow popups in your browser.');
-        return;
-      }
-  
-      window.addEventListener('message', (event) => {
-        if (event.origin !== window.location.origin) return;
-  
-        if (event.data.token) {
-          localStorage.setItem('authToken', event.data.token);
-          navigate('/onboarding');
-        }
-      });
-      
-    } catch (err) {
-      toast.error(err.response?.data?.message || 'An error occurred during signup');
-    }
+    handleGoogleAuth(navigate, '/onboarding');
   };
 
   useEffect(() => {

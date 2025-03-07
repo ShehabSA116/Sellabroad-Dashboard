@@ -4,6 +4,7 @@ import GoogleButton from '../../ui/GoogleButton';
 import authService from '../../Services/authService';
 import { toast } from 'react-toastify';
 import InputField from '../../ui/InputField';
+import { handleGoogleAuth } from '../utils/handleGoogleAuth';
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -35,38 +36,7 @@ export default function SignIn() {
   
   const handleGoogleLogin = async (e) => {
     e.preventDefault();
-    try {
-      const { authUrl } = await authService.googleLogin();
-      
-      if (!authUrl) throw new Error('Auth URL not received');
-  
-      const width = 600, height = 600;
-      const left = (window.innerWidth - width) / 2;
-      const top = (window.innerHeight - height) / 2;
-  
-      const popup = window.open(
-        authUrl,
-        'GoogleLoginPopup',
-        `width=${width},height=${height},top=${top},left=${left},resizable=no`
-      );
-  
-      if (!popup) {
-        toast.error('Popup blocked! Allow popups in your browser.');
-        return;
-      }
-  
-      window.addEventListener('message', (event) => {
-        if (event.origin !== window.location.origin) return;
-  
-        if (event.data.token) {
-          localStorage.setItem('authToken', event.data.token);
-          navigate('/dashboard');
-        }
-      });
-      
-    } catch (error) {
-      toast.error('Error fetching Google auth URL:', error);
-    }
+    handleGoogleAuth(navigate, '/dashboard');
   };
   
   const handleSubmit = async (e) => {
