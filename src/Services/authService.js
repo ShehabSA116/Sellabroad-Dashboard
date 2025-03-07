@@ -1,5 +1,7 @@
 import api from './api';
 
+
+
 const authService = {
   signup: async (userData) => {
     const response = await api.post('/auth/signup', userData);
@@ -47,7 +49,10 @@ const authService = {
   },
 
   logout: () => {
-    localStorage.removeItem('token');
+    const token = localStorage.getItem('token');
+    if (token) {
+      localStorage.removeItem('token');
+    }
   },
 
   getCurrentUser: () => {

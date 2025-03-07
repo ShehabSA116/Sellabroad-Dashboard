@@ -93,7 +93,7 @@ export default function SignUp() {
 
     try {
       const fullName = `${formData.firstName} ${formData.lastName}`.trim();
-      const response = await authService.signup({
+      const signupData = {
         email: formData.email,
         password: formData.password,
         fullName: fullName,
@@ -101,7 +101,10 @@ export default function SignUp() {
         phoneNumber: formData.phoneNumber,
         companyWebsite: formData.companyWebsite,
         residenceCountry: formData.residenceCountry
-      });
+      };
+      
+      console.log('Signup data being sent:', signupData);
+      const response = await authService.signup(signupData);
 
       if (response.token) {
         navigate('/dashboard');
@@ -218,7 +221,7 @@ export default function SignUp() {
             >
               <option value="">Select a country</option>
               {countries.map(country => (
-                <option key={country._id} value={country.id}>
+                <option key={country._id} value={country._id}>
                   {country.name}
                 </option>
               ))}
