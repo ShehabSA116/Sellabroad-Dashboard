@@ -1,5 +1,6 @@
 // SignUp.jsx
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {  useNavigate } from 'react-router-dom';
 import GoogleButton from '../../ui/GoogleButton';
 import authService from '../../Services/authService';
@@ -121,7 +122,7 @@ export default function SignUp() {
       };
             const response = await authService.signup(signupData);
       if (response.token) {
-        navigate('/dashboard');
+        navigate('/onboarding');
       } else {
         navigate('/auth/verify-otp');
       }
@@ -156,7 +157,7 @@ export default function SignUp() {
   
         if (event.data.token) {
           localStorage.setItem('authToken', event.data.token);
-          navigate('/dashboard');
+          navigate('/onboarding');
         }
       });
       
