@@ -194,35 +194,7 @@ function MonthView({ currentDate, events = [], setEvents, campaigns = [], showSu
     );
   };
 
-  // Update the rendering of events in the calendar
-  const renderEvent = (event, dayDate) => {
-    const dayEvents = events[dayDate] || [];
-    if (event.type === 'suggestion') {
-      return renderSuggestion(event);
-    }
 
-    return (
-      <div
-        key={event.title}
-        className={`flex items-center space-x-2 rounded-md px-3 py-2 text-sm mb-2 ${
-          event.type === 'campaign'
-            ? 'bg-[#0049ac] text-white'
-            : 'bg-white border border-gray-200 text-gray-700'
-        }`}
-      >
-        {event.platform && (
-          <div className="flex items-center space-x-1">
-            {event.platform === 'klaviyo' && <KlaviyoLogo className="h-4 w-4" />}
-            {event.platform === 'meta' && <MetaLogo className="h-4 w-4" />}
-            {event.platform === 'shopify' && <ShopifyLogo className="h-4 w-4" />}
-            {event.platform === 'google-ads' && <GoogleAdsLogo className="h-4 w-4" />}
-          </div>
-        )}
-        {event.platforms && renderPlatformIcons(event.platforms)}
-        <span className="flex-1 truncate">{event.title}</span>
-      </div>
-    );
-  };
 
   return (
     <div className="shadow ring-1 ring-black ring-opacity-5 overflow-x-auto">

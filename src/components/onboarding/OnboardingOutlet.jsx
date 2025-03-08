@@ -6,16 +6,46 @@ import SidePanel from '../icons/SidePanel';
 export default function OnboardingOutlet() {
   const location = useLocation();
   
-  // Define your steps
+  // Define your steps with titles and subtitles for each step
   const stepInfo = [
-    { id: 'markets', title: 'Markets', description: 'Select your current and target markets', path: '/onboarding/markets' },
-    { id: 'forecast', title: 'Demand Forecast', description: 'Estimate market demand', path: '/onboarding/forecast' },
-    { id: 'documents', title: 'Upload Documents', description: 'Upload required documents', path: '/onboarding/documents' }
+    { 
+      id: 'markets', 
+      title: 'Markets', 
+      description: 'Select your current and target markets', 
+      path: '/onboarding/markets',
+      sidePanelTitle: "Ready to expand?",
+      sidePanelSubtitle: "Select your current markets and target expansion markets to begin your journey."
+    },
+    { 
+      id: 'forecast', 
+      title: 'Demand Forecast', 
+      description: 'Estimate market demand', 
+      path: '/onboarding/forecast',
+      sidePanelTitle: "Understand your potential",
+      sidePanelSubtitle: "Connect your store to see projected sales and marketing recommendations for your target markets."
+    },
+    { 
+      id: 'documents', 
+      title: 'Upload Documents', 
+      description: 'Upload required documents', 
+      path: '/onboarding/documents',
+      sidePanelTitle: "Almost there!",
+      sidePanelSubtitle: "Upload the necessary documents to complete your onboarding process and start selling."
+    }
   ];
 
   // Determine current step based on the current route
   const currentPath = location.pathname;
   const currentStepIndex = stepInfo.findIndex(step => currentPath.includes(step.id));
+  
+  // Default titles if no step is matched
+  const defaultTitle = "Join our platform";
+  const defaultSubtitle = "Create an account to access powerful tools for expanding into the Middle East market!";
+  
+  // Get current step's panel titles or use defaults
+  const currentStep = stepInfo[currentStepIndex] || {};
+  const sidePanelTitle = currentStep.sidePanelTitle || defaultTitle;
+  const sidePanelSubtitle = currentStep.sidePanelSubtitle || defaultSubtitle;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -23,8 +53,8 @@ export default function OnboardingOutlet() {
         {/* Sidebar - Hide on mobile */}
         <div className="hidden md:block md:fixed md:left-0 md:w-[400px]">
           <SidePanel 
-            title="Join our platform"
-            subtitle="Create an account to access powerful tools for expanding into the Middle East market!"
+            title={sidePanelTitle}
+            subtitle={sidePanelSubtitle}
           />
         </div>
 

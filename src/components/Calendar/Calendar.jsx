@@ -22,13 +22,6 @@ function Calendar() {
   const [dismissed, setDismissed] = useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  const calculateTotalDays = (startDate, endDate) => {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    const diffTime = Math.abs(end - start);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
-  };
 
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 

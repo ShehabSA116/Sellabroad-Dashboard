@@ -1,4 +1,6 @@
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
+import { useNavigate, useOutletContext } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 
 function UploadDocuments({ onPrevious }) {
   const requiredDocuments = [

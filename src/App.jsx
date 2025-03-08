@@ -14,11 +14,13 @@ import SignUp from './pages/SignUp';
 import AuthCallback from './components/auth/authCallback';
 import OnboardingOutlet from './components/onboarding/OnboardingOutlet';
 import { ToastContainer } from 'react-toastify';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
     <Router>
       <ToastContainer />
+      <Toaster position="top-right" />
       <Routes>
         {/* Authentication routes */}
         <Route path="/auth" element={<AuthenticateLayout />}>
