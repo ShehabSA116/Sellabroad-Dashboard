@@ -4,8 +4,9 @@ import GoogleAdsLogo from '../icons/GoogleAdsLogo';
 import ShopifyLogo from '../icons/ShopifyLogo';
 import MetaLogo from '../icons/MetaLogo';
 import { useNavigate } from 'react-router-dom';
+import { useEffect,useState,useRef } from 'react';
 
-function MonthView({ currentDate, events = [], setEvents, campaigns = [], showSuggestions, dismissed, onDismiss }) {
+function MonthView({ currentDate, events, setEvents, campaigns, showSuggestions, dismissed, onDismiss }) {
   const navigate = useNavigate();
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const getDaysInMonth = (date) => {
@@ -95,7 +96,7 @@ function MonthView({ currentDate, events = [], setEvents, campaigns = [], showSu
     return (
       <div 
         className={`bg-[#0049ac] text-white rounded-lg flex items-center justify-center ${
-          daysToSpan === 1 ? 'w-32 lg:w-48 group relative' : 'w-[calc(100%-4px)]'  // Increased from w-24 to w-32
+          daysToSpan === 1 ? 'w-32 lg:w-40 group relative' : 'w-[calc(95%-4px)]'  // Increased from w-24 to w-32
         }`}
       >
         <div className="flex items-center justify-center w-full min-w-0 px-1">
@@ -194,7 +195,35 @@ function MonthView({ currentDate, events = [], setEvents, campaigns = [], showSu
     );
   };
 
+  // Update the rendering of events in the calendar
+  const renderEvent = (event, dayDate) => {
+    const dayEvents = events[dayDate] || [];
+    if (event.type === 'suggestion') {
+      return renderSuggestion(event);
+    }
 
+    return (
+      <div
+        key={event.title}
+        className={`flex items-center space-x-2 rounded-md px-3 py-2 text-sm mb-2 ${
+          event.type === 'campaign'
+            ? 'bg-[#0049ac] text-white'
+            : 'bg-white border border-gray-200 text-gray-700'
+        }`}
+      >
+        {event.platform && (
+          <div className="flex items-center space-x-1">
+            {event.platform === 'klaviyo' && <KlaviyoLogo className="h-4 w-4" />}
+            {event.platform === 'meta' && <MetaLogo className="h-4 w-4" />}
+            {event.platform === 'shopify' && <ShopifyLogo className="h-4 w-4" />}
+            {event.platform === 'google-ads' && <GoogleAdsLogo className="h-4 w-4" />}
+          </div>
+        )}
+        {event.platforms && renderPlatformIcons(event.platforms)}
+        <span className="flex-1 truncate">{event.title}</span>
+      </div>
+    );
+  };
 
   return (
     <div className="shadow ring-1 ring-black ring-opacity-5 overflow-x-auto">

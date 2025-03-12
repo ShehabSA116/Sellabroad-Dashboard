@@ -4,8 +4,9 @@ import GoogleAdsLogo from '../icons/GoogleAdsLogo';
 import ShopifyLogo from '../icons/ShopifyLogo';
 import MetaLogo from '../icons/MetaLogo';
 import { useNavigate } from 'react-router-dom';
+import { useEffect,useState,useRef } from 'react';
 
-function WeekView({ currentDate, events=[], setEvents, campaigns=[], showSuggestions, dismissed, onDismiss }) {
+function WeekView({ currentDate, events, setEvents, campaigns, showSuggestions, dismissed, onDismiss }) {
   const navigate = useNavigate();
 
   const getWeekDays = (date) => {
@@ -21,6 +22,35 @@ function WeekView({ currentDate, events=[], setEvents, campaigns=[], showSuggest
     return week;
   };
 
+  // Helper to check if a date is the start of a campaign
+  const isCampaignStart = (date, campaign) => {
+    const campaignStart = new Date(campaign.start);
+    return date.getDate() === campaignStart.getDate() && 
+           date.getMonth() === campaignStart.getMonth();
+  };
+
+  // Get campaigns that start on a specific date
+  const getCampaignStartsForDate = (date) => {
+    return campaigns.filter(campaign => isCampaignStart(date, campaign));
+  };
+
+  // Calculate how many days the campaign continues in the current week
+  const getCampaignDaysInWeek = (startDate, campaign) => {
+    const campaignEnd = new Date(campaign.end);
+    const weekEnd = new Date(startDate);
+    weekEnd.setDate(startDate.getDate() + (6 - startDate.getDay()));
+    
+    const endDate = campaignEnd < weekEnd ? campaignEnd : weekEnd;
+    const diffDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+    
+    // Check if campaign continues beyond this week
+    const continuesBeyondWeek = campaignEnd > weekEnd;
+    
+    return {
+      days: diffDays,
+      continues: continuesBeyondWeek
+    };
+  };
 
   // Update to get both starting and ongoing campaigns
   const getCampaignsForWeek = (date) => {
@@ -182,6 +212,15 @@ function WeekView({ currentDate, events=[], setEvents, campaigns=[], showSuggest
     );
   };
 
+  // Function to filter events based on your criteria
+  const getRelevantEvents = () => {
+    return events.filter(event => {
+      // Example condition: filter for events of type 'HOLIDAY_PROMOTION'
+      return event.type === 'HOLIDAY_PROMOTION';
+    });
+  };
+
+  const relevantEvents = getRelevantEvents();
 
   return (
     <div className="flex flex-col h-full">
