@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+import { shopifyService } from '../../services';
 
 function DemandForecast() {
   const navigate = useNavigate();
@@ -53,9 +54,27 @@ function DemandForecast() {
     }
   };
 
-  const handleShopifyConnect = (e) => {
+  const handleShopifyConnect = async (e) => {
     e.preventDefault();
-    setConnectedStore('example-store.myshopify.com');
+    try {
+      if (!shopifyStore) {
+        toast.error('Please enter a store name');
+        return;
+      }
+      setLoading(true);
+      const shopDomain = `${shopifyStore}.myshopify.com`;
+      const response = await shopifyService.connectShopify(shopDomain);
+      
+      if (response.installUrl) {
+        window.location.href = response.installUrl;
+      } else {
+        toast.error('Failed to connect to Shopify');
+      }
+    } catch (error) {
+      toast.error(error.message || 'Failed to connect to Shopify');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
