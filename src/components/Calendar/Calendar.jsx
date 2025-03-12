@@ -13,15 +13,11 @@ function Calendar() {
   const [showSuggestions, setShowSuggestions] = useState(true);
   const [events, setEvents] = useState([]);
   const [campaigns, setCampaigns] = useState([]);
-  const [publishedCampaigns, setPublishedCampaigns] = useState(() => {
-    const saved = localStorage.getItem('publishedCampaigns');
-    return saved ? JSON.parse(saved) : [];
-  });
+
   const [targetMarkets, setTargetMarkets] = useState([]);
   const [selectedMarket, setSelectedMarket] = useState('');
   const [dismissed, setDismissed] = useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
 
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
